@@ -27,10 +27,21 @@ Then:
 
     what3words = What3Words::API.new(:key => "<your-api-key>")
 
-    # Convert 3 words to position information - only required parameters supplied
+    # Convert 3 words to lat/long
     what3words.words_to_position ["prom", "cape", "pump"]
-    # => { :type => "3 words", :words => ["prom", "cape", "pump"],
-           :position => [51.484463, -0.195405], :language => "en" }
+    # => [51.484463, -0.195405]
+
+    # Convert 3 words to lat/long with optional parameters
+    what3words.words_to_position ["prom", "cape", "pump"], :full_response => true
+    # => [51.484463, -0.195405]
+
+    Supported keyword params for `words_to_position` call:
+
+    * `full_response` (default false) - return the original response from the API
+    * `password` (default nil) - password for OneWord, if private
+    * `language` (default en) - if this is given with full_response, then the
+      response from the API will return 3 words this language - useful for
+      converting 3 words to different languages
 
     # Convert 3 words to position information in a different language with
     # corner coordinates - all parameters supplied
