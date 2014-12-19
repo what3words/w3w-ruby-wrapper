@@ -27,31 +27,29 @@ Then:
 
     what3words = What3Words::API.new(:key => "<your-api-key>")
 
-    # Convert 3 words to lat/long
+Convert 3 words or a OneWord into GPS coordinates
+
     what3words.words_to_position ["prom", "cape", "pump"]
     # => [51.484463, -0.195405]
 
-    # Convert 3 words to lat/long with optional parameters
-    what3words.words_to_position ["prom", "cape", "pump"], :full_response => true
-    # => [51.484463, -0.195405]
+Convert 3 words or a OneWord into GPS coordinates and return 3 words for the same position in a different language
 
-    Supported keyword params for `words_to_position` call:
+    what3words.words_to_position ["prom", "cape", "pump"], :full_response => true, :lang => "fr"
+    # => { :type => "3 words", :words => ["concevoir", "époque", "amasser"],
+           :position => [51.484463, -0.195405], :language: "fr" }
 
-    * `full_response` (default false) - return the original response from the API
-    * `password` (default nil) - password for OneWord, if private
-    * `language` (default en) - if this is given with full_response, then the
-      response from the API will return 3 words this language - useful for
-      converting 3 words to different languages
+Supported keyword params for `words_to_position` call:
 
-    # Convert 3 words to position information in a different language with
-    # corner coordinates - all parameters supplied
-    what3words.words_to_position ["prom", "cape", "pump"], :language => "fr",
-      :corners => true
-    # TODO CORRECT ME => { :type => "3 words", :words => ["oui", "non", "moi"],
-           :position => [51.484463, -0.195405], :language => "fr" }
+* `full_response` (default false) - return the original response from the API
+* `lang` (defaults to language of 3 words)  - optional language code (only use this if you want to return 3 words in a different language to the language submitted)
+* `oneword_password` (default nil) - password for OneWord, if private
+* `corners` (default false) - "true" or "false" to return the coordinates of the w3w square. Will return an array with the southwest coordinates of the square and then the northeast coordinate
+* `email` - user email if required for private OneWord
+* `password` - user password if required for private OneWord
 
-    # Converts public *OneWord to position information in a different
-    # language with corner coordinates
+TODO from below here
+
+Converts public *OneWord to 
     what3words.oneword_to_position "*libertytech", :language => "en"
     # => TODO
 
