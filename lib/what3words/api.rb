@@ -26,25 +26,47 @@ module What3Words
 
     def words_to_position(words, params = {})
       words_string = get_words_string words
-      request_params = assemble_request_params(words_string, params)
+      request_params = assemble_w2p_request_params(words_string, params)
       needs_ssl = needs_ssl?(request_params)
       response = request! :words_to_position, request_params, needs_ssl
-
-      if params[:full_response]
-        response
-      else
-        response[:position]
-      end
+      make_response(response, :position, params[:full_response])
     end
 
-    def assemble_request_params(words_string, params)
-      h = {:string => words_string, :key => key}
+    def position_to_words(position, params = {})
+      request_params = assemble_p2w_request_params(position, params)
+      response = request! :position_to_words, request_params
+      make_response(response, :words, params[:full_response])
+    end
+
+    def assemble_common_request_params(params)
+      h = {}
       h[:lang] = params[:language] if params[:language]
       h[:corners] = true if params[:corners]
+      h
+    end
+    private :assemble_common_request_params
+
+    def assemble_w2p_request_params(words_string, params)
+      h = {:string => words_string, :key => key}
       h[:"oneword-password"] = params[:oneword_password] if params[:oneword_password]
       h[:email] = params[:email] if params[:email]
       h[:password] = params[:password] if params[:password]
-      h
+      h.merge(assemble_common_request_params(params))
+    end
+    private :assemble_w2p_request_params
+
+    def assemble_p2w_request_params(position, params)
+      h = {:position => position.join(","), :key => key}
+      h.merge(assemble_common_request_params(params))
+    end
+    private :assemble_p2w_request_params
+
+    def make_response(response, part_response_key, need_full_response)
+      if need_full_response
+        response
+      else
+        response[part_response_key]
+      end
     end
 
     def request!(endpoint_name, params, needs_ssl = false)
