@@ -128,8 +128,28 @@ describe What3Words::API do
 
   end
 
+  describe "getting available languages" do
+
+    def stub!(request_body, response_body = {})
+      r = stub_request(:post, "http://api.what3words.com/get-languages").
+        with(:body => request_body).
+        to_return(:status => 200, :body => response_body.to_json)
+    end
+
+    it "gets list of codes" do
+      stub! anything, {:languages => [{:code => "l1"}, {:code => "l2"}]}
+      expect(w3w.languages). to eq ["l1", "l2"]
+    end
+
+    it "gets full response" do
+      stub! anything, {:languages => [{:code => "l1"}, {:code => "l2"}]}
+      expect(w3w.languages :full_response => true).
+        to eq(:languages => [{:code => "l1"}, {:code => "l2"}])
+    end
+  end
+
   it "'s deep_symbolize_keys helper works" do
-    expect(w3w.deep_symbolize_keys("foo" => {"bar" => true})).
-      to eq(:foo => {:bar => true})
+    expect(w3w.deep_symbolize_keys("foo" => {"bar" => 1, "baz" => [{"quux" => "www"}]})).
+      to eq(:foo => {:bar => 1, :baz => [{:quux => "www"}]})
   end
 end

@@ -38,8 +38,18 @@ module What3Words
       make_response(response, :words, params[:full_response])
     end
 
+    def languages(params = {})
+      request_params = assemble_common_request_params(params)
+      response = request! :languages, request_params
+      if params[:full_response]
+        response
+      else
+        response[:languages].map {|i| i[:code]}
+      end
+    end
+
     def assemble_common_request_params(params)
-      h = {}
+      h = {:key => key}
       h[:lang] = params[:language] if params[:language]
       h[:corners] = true if params[:corners]
       h
@@ -47,7 +57,7 @@ module What3Words
     private :assemble_common_request_params
 
     def assemble_w2p_request_params(words_string, params)
-      h = {:string => words_string, :key => key}
+      h = {:string => words_string}
       h[:"oneword-password"] = params[:oneword_password] if params[:oneword_password]
       h[:email] = params[:email] if params[:email]
       h[:password] = params[:password] if params[:password]
@@ -56,7 +66,7 @@ module What3Words
     private :assemble_w2p_request_params
 
     def assemble_p2w_request_params(position, params)
-      h = {:position => position.join(","), :key => key}
+      h = {:position => position.join(",")}
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_p2w_request_params
@@ -68,6 +78,7 @@ module What3Words
         response[part_response_key]
       end
     end
+    private :make_response
 
     def request!(endpoint_name, params, needs_ssl = false)
       response = RestClient.post endpoint(endpoint_name, needs_ssl), params
@@ -99,19 +110,17 @@ module What3Words
     end
     private :check_words
 
-    def deep_symbolize_keys(hash)
-      nh = {}
-      hash.each do |k, v|
-        nk = k.to_sym
-
-        if v.kind_of?(Hash)
-          nv = deep_symbolize_keys(v)
-        else
-          nv = v
-        end
-        nh[nk] = nv
+    def deep_symbolize_keys(i)
+      if i.kind_of? Hash
+        ni = {}
+        i.each {|k,v| ni[k.respond_to?(:to_sym) ? k.to_sym : k] = deep_symbolize_keys(v) }
+      elsif i.kind_of? Array
+        ni = i.map(&method(:deep_symbolize_keys))
+      else
+        ni = i
       end
-      nh
+
+      ni
     end
 
     def base_url(needs_ssl = false)
