@@ -14,3 +14,4 @@ test/version_tmp
 tmp
 .api_key
 .rspec
+spec/config.yaml
