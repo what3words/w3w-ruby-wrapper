@@ -81,3 +81,8 @@ passed through in an intuitive way
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+# Testing
+
+1. Unit specs require no set up. Look in `spec/what3words`
+2. Integration specs that hit the API directly are in spec/integration, and need the file spec/config.yaml to be filled in (using spec/config.sample.yaml as a template) with valid details. It is only needed for testing private OneWord functionality
