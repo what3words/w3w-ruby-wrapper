@@ -1,4 +1,4 @@
-# what3words
+# what3words Ruby wrapper
 
 Use the what3words API in your Ruby app (see http://what3words.com/api/reference)
 
