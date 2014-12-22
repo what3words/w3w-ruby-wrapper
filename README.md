@@ -6,7 +6,6 @@ Use the What3Words API in your Ruby app (see http://what3words.com/api/reference
 
 Add this line to your application's Gemfile:
 
-    gem "what3words"
 
 And then execute:
 
@@ -22,6 +21,10 @@ Sign up for an API key at http://what3words.com/api/signup
 
 See http://what3words.com/api/reference for all parameters that can be
 passed to the API calls
+
+If not using Bundler, require it:
+
+    require "what3words"
 
 Then:
 
