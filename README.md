@@ -1,6 +1,6 @@
-# What3Words
+# what3words
 
-Use the What3Words API in your Ruby app (see http://what3words.com/api/reference)
+Use the what3words API in your Ruby app (see http://what3words.com/api/reference)
 
 ## Installation
 
