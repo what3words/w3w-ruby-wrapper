@@ -67,9 +67,9 @@ Convert position information to 3 words in a different language
 
 Supported keyword params for `position_to_words` call:
 
-    * `full_response` (default false) - return the original response from the API
-    * `language` (defaults to en)  - optional language code
-    * `corners` (default false) - "true" or "false" to return the coordinates of the w3w square. Will return an array with the southwest coordinates of the square and then the northeast coordinate
+* `full_response` (default false) - return the original response from the API
+* `language` (defaults to en)  - optional language code
+* `corners` (default false) - "true" or "false" to return the coordinates of the w3w square. Will return an array with the southwest coordinates of the square and then the northeast coordinate
 
 Get list of available 3 word languages
 
