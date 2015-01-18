@@ -28,7 +28,7 @@ If not using Bundler, require it:
 
 Then:
 
-    what3words = What3Words::API.new(:key => "<your-api-key>")
+    what3words = What3Words::API.new(:key => "YOURAPIKEY")
 
 Convert 3 words into GPS coordinates
 
