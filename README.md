@@ -85,7 +85,7 @@ See http://what3words.com/api/reference for the original API call documentation
 
 ## Contributing
 
-1. Fork it ( http://github.com/what3words and click "Fork" )
+1. Fork it ( github.com/what3words/w3w-ruby-wrapper and click "Fork" )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
