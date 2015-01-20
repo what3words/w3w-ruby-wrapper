@@ -1,6 +1,6 @@
 # what3words Ruby wrapper
 
-Use the what3words API in your Ruby app (see http://what3words.com/api/reference)
+Use the what3words API in your Ruby app (see http://developer.what3words.com/api)
 
 ## Installation
 
@@ -17,9 +17,9 @@ Or install it yourself as:
 
 ## Usage
 
-Sign up for an API key at http://what3words.com/api/signup
+Sign up for an API key at http://developer.what3words.com
 
-See http://what3words.com/api/reference for all parameters that can be
+See http://developer.what3words.com/api for all parameters that can be
 passed to the API calls
 
 If not using Bundler, require it:
@@ -81,7 +81,7 @@ The `get_languages` call also returns the full response from the API
     what3words.languages :full_response => true
     # => {:languages=>[{:code=>"de", :name_display=>"Deutsch"}, {:code=>"en", :name_display=>"English"}, ... ]}
 
-See http://what3words.com/api/reference for the original API call documentation
+See http://developer.what3words.com for the original API call documentation
 
 ## Contributing
 
