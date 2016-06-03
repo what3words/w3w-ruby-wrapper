@@ -7,9 +7,9 @@ require "what3words/version"
 Gem::Specification.new do |spec|
   spec.name = "what3words"
   spec.version = What3Words::VERSION
-  spec.authors = ["Asfand Yar Qazi"]
-  spec.email = ["ayqazi@gmail.com"]
-  spec.summary = "Query the what3words API in Ruby"
+  spec.authors = ["what3words"]
+  spec.email = ["development@what3words.com"]
+  spec.summary = "what3words API wrapper in Ruby"
   spec.homepage = "http://rubygems.org/gems/what3words"
   spec.license = "MIT"
 
@@ -18,10 +18,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "rest-client"
+  spec.add_dependency "rest-client", "~> 1.8"
 
-  spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "bundler", "~> 1.12"
+  spec.add_development_dependency "rake", "~> 11.1"
+  spec.add_development_dependency "rspec", "~> 3.4"
+  spec.add_development_dependency "webmock", "~> 2.0"
 end

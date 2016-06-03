@@ -1,4 +1,4 @@
-# what3words Ruby wrapper
+# ![what3words](https://map.what3words.com/images/map/marker-border.png)what3words Ruby wrapper
 
 Use the what3words API in your Ruby app (see http://developer.what3words.com/api)
 
@@ -6,6 +6,7 @@ Use the what3words API in your Ruby app (see http://developer.what3words.com/api
 
 Add this line to your application's Gemfile:
 
+    gem 'what3words', '~> 2.0'
 
 And then execute:
 
@@ -19,7 +20,7 @@ Or install it yourself as:
 
 Sign up for an API key at http://developer.what3words.com
 
-See http://developer.what3words.com/api for all parameters that can be
+See https://docs.what3words.com/api/v2/ for all parameters that can be
 passed to the API calls
 
 If not using Bundler, require it:
@@ -30,50 +31,46 @@ Then:
 
     what3words = What3Words::API.new(:key => "YOURAPIKEY")
 
-Convert 3 words into GPS coordinates
+Forward Geocode : convert a 3 word address into GPS coordinates (WGS-84)
 
-    what3words.words_to_position ["prom", "cape", "pump"]
-    # => [51.484463, -0.195405]
+    what3words.forward "prom.cape.pump"
+    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"prom.cape.pump", :map=>"http://w3w.co/prom.cape.pump", :language=>"en", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
-Convert 3 words into GPS coordinates and return 3 words for the same position in a different language
+## API
+### Forward Geocoding
+Convert a 3 word address into GPS coordinates and return 3 words for the same position in a different language
 
-    what3words.words_to_position ["prom", "cape", "pump"], :full_response => true, :lang => "fr"
-    # => { :type => "3 words", :words => ["concevoir", "époque", "amasser"],
-           :position => [51.484463, -0.195405], :language: "fr" }
+    what3words.forward "prom.cape.pump", :lang => "fr"
+    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"concevoir.époque.amasser", :map=>"http://w3w.co/concevoir.époque.amasser", :language=>"fr", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
-Supported keyword params for `words_to_position` call:
+Supported keyword params for `forward` call:
 
-* `full_response` (default false) - return the original response from the API
-* `language` (defaults to language of 3 words)  - optional language code (only use this if you want to return 3 words in a different language to the language submitted)
-* `corners` (default false) - "true" or "false" to return the coordinates of the w3w square. Will return an array with the southwest coordinates of the square and then the northeast coordinate
-* `email` (default nil) - user email if required for private OneWord
-* `password` (default nil) - user password if required for private OneWord
+* `lang` (defaults to language of 3 words)  - optional language code (only use this if you want to return 3 words in a different language to the language submitted)
+* `format` Return data format type; can be one of json (the default), geojson or xml
+* `display` Return display type; can be one of full (the default) or terse
 
-Convert position information to 3 words
+### Reverse Geocoding
+Reverse Geocode : Convert position(latitude) information to a 3 word address
 
-    what3words.position_to_words [51.484463, -0.195405]
-    # => ["prom", "cape", "pump"]
+    what3words.reverse [51.484463, -0.195405]
+    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"prom.cape.pump", :map=>"http://w3w.co/prom.cape.pump", :language=>"en", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
-Convert position information to 3 words in a different language
+Convert position information to a 3 word address in a specific language
 
-    what3words.position_to_words [51.484463, -0.195405], :lang => :fr
-    # => ["concevoir", "époque", "amasser"]
+    what3words.reverse [51.484463, -0.195405], :lang => :fr
+    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"concevoir.époque.amasser", :map=>"http://w3w.co/concevoir.époque.amasser", :language=>"fr", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
-Supported keyword params for `position_to_words` call:
+Supported keyword params for `reverse` call:
 
-* `full_response` (default false) - return the original response from the API
-* `language` (defaults to en)  - optional language code
-* `corners` (default false) - "true" or "false" to return the coordinates of the w3w square. Will return an array with the southwest coordinates of the square and then the northeast coordinate
+* `lang` (defaults to en)  - optional language code
+* `format` Return data format type; can be one of json (the default), geojson or xml
+* `display` Return display type; can be one of full (the default) or terse
 
+### Get Languages
 Get list of available 3 word languages
 
     what3words.languages
-    # => [ "en", "fr" ]
-
-The `get_languages` call also returns the full response from the API
-
-    what3words.languages :full_response => true
-    # => {:languages=>[{:code=>"de", :name_display=>"Deutsch"}, {:code=>"en", :name_display=>"English"}, ... ]}
+    # => {:languages=>[{:name=>"German", :native_name=>"Deutsch  (beta)", :code=>"de"}, {:name=>"Italian", :native_name=>"Italiano  (beta)", :code=>"it"}, {:name=>"Turkish", :native_name=>"Türkçe  (beta)", :code=>"tr"}, {:name=>"Portuguese", :native_name=>"Português  (beta)", :code=>"pt"}, {:name=>"French", :native_name=>"français, langue française  (beta)", :code=>"fr"}, {:name=>"Swedish", :native_name=>"svenska  (beta)", :code=>"sv"}, {:name=>"English", :native_name=>"English", :code=>"en"}, {:name=>"Russian", :native_name=>"русский язык  (beta)", :code=>"ru"}, {:name=>"Spanish; Castilian", :native_name=>"español, castellano  (beta)", :code=>"es"}, {:name=>"Swahili", :native_name=>"Kiswahili  (beta)", :code=>"sw"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
 See http://developer.what3words.com for the original API call documentation
 
@@ -85,7 +82,13 @@ See http://developer.what3words.com for the original API call documentation
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-### Testing
+### Testing/
 
-1. Unit specs require no set up. Look in `spec/what3words`
-2. Integration specs that hit the API directly are in spec/integration, and need the file spec/config.yaml to be filled in (using spec/config.sample.yaml as a template) with valid details. It is only needed for testing private OneWord functionality
+ Prerequisite : we are using [bundler](https://rubygems.org/gems/bundler)
+    `$ gem install bundler`
+
+1. `$ cd w3w-ruby-wrapper`
+1. `$ bundle update`
+1. `$ rake spec`
+1. Mock Unit specs require no set up. Look in `spec/mock/`
+1. Integration specs that hit the API directly are in `spec/what3words`, and need the file `spec/config.yaml` to be filled in (using `spec/config.sample.yaml` as a template) with valid details.

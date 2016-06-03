@@ -9,13 +9,15 @@ module What3Words
     class ResponseError < Error; end
     class WordError < Error; end
 
-    REGEX_3_WORDS = /^\p{L}+\.\p{L}+\.\p{L}+$/u
-    REGEX_ONE_WORD = /^\*[\p{L}\-0-9]{6,31}$/u
+    REGEX_3_WORD_ADDRESS = /^\p{L}+\.\p{L}+\.\p{L}+$/u
+    REGEX_STRICT = /^\p{L}{4,}+\.\p{L}{4,}+\.\p{L}{4,}+$/u
+
+    BASE_URL = "https://beta.what3words.com/v2/"
 
     ENDPOINTS = {
-      :words_to_position => "w3w",
-      :position_to_words => "position",
-      :languages => "get-languages"
+      :forward => "forward",
+      :reverse => "reverse",
+      :languages => "languages"
     }
 
     def initialize(params)
@@ -24,67 +26,59 @@ module What3Words
 
     attr_reader :key
 
-    def words_to_position(words, params = {})
+    def forward(words, params = {})
       words_string = get_words_string words
-      request_params = assemble_w2p_request_params(words_string, params)
-      needs_ssl = needs_ssl?(request_params)
-      response = request! :words_to_position, request_params, needs_ssl
-      make_response(response, :position, params[:full_response])
+      request_params = assemble_forward_request_params(words_string, params)
+      response = request! :forward, request_params
+      response
     end
 
-    def position_to_words(position, params = {})
-      request_params = assemble_p2w_request_params(position, params)
-      response = request! :position_to_words, request_params
-      make_response(response, :words, params[:full_response])
+    def reverse(position, params = {})
+      request_params = assemble_reverse_request_params(position, params)
+      response = request! :reverse, request_params
+      response
     end
 
     def languages(params = {})
       request_params = assemble_common_request_params(params)
       response = request! :languages, request_params
-      if params[:full_response]
-        response
-      else
-        response[:languages].map {|i| i[:code]}
-      end
+      response
     end
 
     def assemble_common_request_params(params)
       h = {:key => key}
-      h[:lang] = params[:language] if params[:language]
-      h[:corners] = true if params[:corners]
+      h[:lang] = params[:lang] if params[:lang]
+      h[:format] = params[:format] if params[:format]
+      h[:display] = params[:format] if params[:format]
       h
     end
     private :assemble_common_request_params
 
-    def assemble_w2p_request_params(words_string, params)
-      h = {:string => words_string}
-      h[:"oneword-password"] = params[:oneword_password] if params[:oneword_password]
-      h[:email] = params[:email] if params[:email]
-      h[:password] = params[:password] if params[:password]
+    def assemble_forward_request_params(words_string, params)
+      h = {:addr => words_string}
       h.merge(assemble_common_request_params(params))
     end
-    private :assemble_w2p_request_params
+    private :assemble_forward_request_params
 
-    def assemble_p2w_request_params(position, params)
-      h = {:position => position.join(",")}
+    def assemble_reverse_request_params(position, params)
+      h = {:coords => position.join(",")}
       h.merge(assemble_common_request_params(params))
     end
-    private :assemble_p2w_request_params
+    private :assemble_reverse_request_params
 
-    def make_response(response, part_response_key, need_full_response)
-      if need_full_response
-        response
-      else
-        response[part_response_key]
+    def request!(endpoint_name, params)
+      # puts endpoint_name.inspect
+      # puts params.inspect
+      begin
+        response = RestClient.get endpoint(endpoint_name), params: params
+      rescue => e
+        response = e.response
       end
-    end
-    private :make_response
-
-    def request!(endpoint_name, params, needs_ssl = false)
-      response = RestClient.post endpoint(endpoint_name, needs_ssl), params
+      # puts "#{response.to_str}"
+      # puts "Response status: #{response.code}"
       response = JSON.parse(response.body)
-      if response["error"].to_s.strip != ""
-        raise ResponseError, "#{response["error"]}: #{response["message"]}"
+      if response["code"].to_s.strip != ""
+        raise ResponseError, "#{response["code"]}: #{response["message"]}"
       end
       deep_symbolize_keys(response)
     end
@@ -103,8 +97,8 @@ module What3Words
     private :get_words_string
 
     def check_words(words)
-      unless REGEX_3_WORDS.match(words) or REGEX_ONE_WORD.match(words)
-        raise WordError, "#{words} is not valid 3 words or OneWord"
+      unless REGEX_3_WORD_ADDRESS.match(words)
+        raise WordError, "#{words} is not a valid 3 word address"
       end
       return words
     end
@@ -123,21 +117,14 @@ module What3Words
       ni
     end
 
-    def base_url(needs_ssl = false)
-      protocol = needs_ssl ? "https" : "http"
-      "#{protocol}://api.what3words.com/"
+    def base_url()
+      BASE_URL
     end
     private :base_url
 
-    def endpoint(name, needs_ssl)
-      return base_url(needs_ssl) + ENDPOINTS.fetch(name)
+    def endpoint(name)
+      return base_url() + ENDPOINTS.fetch(name)
     end
-
-    def needs_ssl?(params)
-      (params.has_key?(:email) and params.has_key?(:password)) or
-        params.has_key?(:"oneword-password")
-    end
-    private :needs_ssl?
 
   end
 end
