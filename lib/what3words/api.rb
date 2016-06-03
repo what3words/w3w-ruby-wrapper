@@ -12,12 +12,13 @@ module What3Words
     REGEX_3_WORD_ADDRESS = /^\p{L}+\.\p{L}+\.\p{L}+$/u
     REGEX_STRICT = /^\p{L}{4,}+\.\p{L}{4,}+\.\p{L}{4,}+$/u
 
-    BASE_URL = "https://beta.what3words.com/v2/"
+    BASE_URL = "https://beta.what3words.com/v2/"    
 
     ENDPOINTS = {
       :forward => "forward",
       :reverse => "reverse",
-      :languages => "languages"
+      :languages => "languages",
+      :autosuggest => "autosuggest"
     }
 
     def initialize(params)
@@ -39,9 +40,15 @@ module What3Words
       response
     end
 
-    def languages(params = {})
-      request_params = assemble_common_request_params(params)
+    def languages()
+      request_params = assemble_common_request_params({})
       response = request! :languages, request_params
+      response
+    end
+
+    def autosuggest(addr, lang, focus = {}, clip = {}, params = {})
+      request_params = assemble_autosuggest_request_params(addr, lang, focus, clip, params)
+      response = request! :autosuggest, request_params
       response
     end
 
@@ -65,6 +72,17 @@ module What3Words
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_reverse_request_params
+
+    def assemble_autosuggest_request_params(addr, lang, focus, clip, params)
+      h = {:addr => addr}
+      h[:lang] = lang
+      if focus.respond_to? :join
+        h[:focus] = focus.join(",")
+      end
+      h[:clip] = clip if clip.respond_to? :to_str
+      h.merge(assemble_common_request_params(params))
+    end
+    private :assemble_autosuggest_request_params
 
     def request!(endpoint_name, params)
       # puts endpoint_name.inspect

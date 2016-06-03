@@ -66,6 +66,28 @@ Supported keyword params for `reverse` call:
 * `format` Return data format type; can be one of json (the default), geojson or xml
 * `display` Return display type; can be one of full (the default) or terse
 
+### Autosuggest
+Returns a list of 3 word addresses based on user input and other parameters.
+
+This resource provides corrections for the following types of input error:
+- typing errors
+- spelling errors
+- misremembered words (e.g. singular vs. plural)
+- words in the wrong order
+
+The autosuggest resource determines possible corrections to the supplied 3 word address string based on the probability of the input errors listed above and returns a ranked list of suggestions. This resource can also take into consideration the geographic proximity of possible corrections to a given location to further improve the suggestions returned.
+
+see https://docs.what3words.com/api/v2/#autosuggest for detailed information
+
+Gets suggestions in italian for this address
+
+    what3words.autosuggest "trovò.calore.perder", "it"
+    # => {:suggestions=>[{:score=>12, :country=>"ma", :words=>"trovò.calore.perdere", :rank=>1, :geometry=>{:lng=>-6.665638, :lat=>34.318065}, :place=>"Kenitra, Gharb-Chrarda-Beni Hssen"}, {:score=>12, :country=>"ca", :words=>"trovò.calore.perderò", :rank=>2, :geometry=>{:lng=>-65.036149, :lat=>45.846472}, :place=>"Salisbury, New Brunswick"}, {:score=>17, :country=>"ve", :words=>"trovò.calore.prede", :rank=>3, :geometry=>{:lng=>-70.280645, :lat=>7.24527}, :place=>"Guasdualito, Apure"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+
+Supported keyword params for `reverse` call:
+  * `format` Return data format type; can be one of json (the default), geojson or xml
+  * `display` Return display type; can be one of full (the default) or terse
+
 ### Get Languages
 Get list of available 3 word languages
 
@@ -82,7 +104,7 @@ See http://developer.what3words.com for the original API call documentation
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-### Testing/
+### Testing
 
  Prerequisite : we are using [bundler](https://rubygems.org/gems/bundler)
     `$ gem install bundler`

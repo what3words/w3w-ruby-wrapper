@@ -74,16 +74,33 @@ describe What3Words::API, "integration", :integration => true do
     end
 
   end
+  describe "autosuggest" do
+    it "simple addr" do
+      result = w3w.autosuggest "trop.caler.perdre", "fr"
+    end
 
-  it "gets languages" do
-    result = w3w.languages
-    # expect(result[:languages]).to include(
-    #   :code => "fr"
-    # )
+    it "with focus" do
+      result = w3w.autosuggest "disclose.strain.redefin", "en", [29.567041, 106.587875]
+    end
+
+    it "with clipping radius around focus" do
+      result = w3w.autosuggest "disclose.strain.redefin", "en", [29.567041, 106.587875], "focus(10)"
+    end
+
+  end
+  describe "languages" do
+    it "gets all languages" do
+      result = w3w.languages
+      # expect(result[:languages]).to include(
+      #   :code => "fr"
+      # )
+    end
   end
 
-  it "'s deep_symbolize_keys helper works" do
-    expect(w3w.deep_symbolize_keys("foo" => {"bar" => true})).
-      to eq(:foo => {:bar => true})
+  describe "technical" do
+    it "'s deep_symbolize_keys helper works" do
+      expect(w3w.deep_symbolize_keys("foo" => {"bar" => true})).
+        to eq(:foo => {:bar => true})
+    end
   end
 end
