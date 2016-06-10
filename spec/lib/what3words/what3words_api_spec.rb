@@ -33,8 +33,11 @@ describe What3Words::API, "integration", :integration => true do
       result = w3w.forward "prom.cape.pump"
       expect(result).to include(
         :words => "prom.cape.pump",
-        :geometry => { :lat => 51.484463, :lng => -0.195405 },
         :language => "en"
+      )
+      expect(result[:geometry]).to include(
+        :lat => "51.484463",
+        :lng => "-0.195405"
       )
     end
 
@@ -42,7 +45,6 @@ describe What3Words::API, "integration", :integration => true do
       result = w3w.forward ["prom", "cape", "pump"], :lang => "fr"
       expect(result).to include(
         :words => "concevoir.époque.amasser",
-        :geometry => { :lat => 51.484463, :lng => -0.195405 },
         :language => "fr"
       )
     end
@@ -59,7 +61,6 @@ describe What3Words::API, "integration", :integration => true do
       result = w3w.reverse [29.567041, 106.587875]
       expect(result).to include(
         :words => "disclose.strain.redefined",
-        :geometry => { :lat => 29.567041, :lng => 106.587875 },
         :language => "en"
       )
     end
@@ -68,7 +69,6 @@ describe What3Words::API, "integration", :integration => true do
       result = w3w.reverse [29.567041, 106.587875], :lang => "fr"
       expect(result).to include(
         :words => "courgette.spécieuse.infrason",
-        :geometry => { :lat => 29.567041, :lng => 106.587875 },
         :language => "fr"
       )
     end

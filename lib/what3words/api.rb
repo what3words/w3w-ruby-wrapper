@@ -12,7 +12,7 @@ module What3Words
     REGEX_3_WORD_ADDRESS = /^\p{L}+\.\p{L}+\.\p{L}+$/u
     REGEX_STRICT = /^\p{L}{4,}+\.\p{L}{4,}+\.\p{L}{4,}+$/u
 
-    BASE_URL = "https://beta.what3words.com/v2/"    
+    BASE_URL = "https://api.what3words.com/v2/"
 
     ENDPOINTS = {
       :forward => "forward",
