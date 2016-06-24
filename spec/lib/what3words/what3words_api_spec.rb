@@ -36,8 +36,8 @@ describe What3Words::API, "integration", :integration => true do
         :language => "en"
       )
       expect(result[:geometry]).to include(
-        :lat => "51.484463",
-        :lng => "-0.195405"
+        :lat => 51.484463,
+        :lng => -0.195405
       )
     end
 
@@ -88,12 +88,23 @@ describe What3Words::API, "integration", :integration => true do
     end
 
   end
+  describe "standardblend" do
+    it "simple addr" do
+      result = w3w.standardblend "trop.caler.perdre", "fr"
+    end
+
+    it "with focus" do
+      result = w3w.standardblend "disclose.strain.redefin", "en", [29.567041, 106.587875]
+    end
+  end
+  describe "grid" do
+    it "string input" do
+      result = w3w.grid "52.208867,0.117540,52.207988,0.116126"      
+    end
+  end
   describe "languages" do
     it "gets all languages" do
       result = w3w.languages
-      # expect(result[:languages]).to include(
-      #   :code => "fr"
-      # )
     end
   end
 

@@ -84,7 +84,37 @@ Gets suggestions in italian for this address
     what3words.autosuggest "trovò.calore.perder", "it"
     # => {:suggestions=>[{:score=>12, :country=>"ma", :words=>"trovò.calore.perdere", :rank=>1, :geometry=>{:lng=>-6.665638, :lat=>34.318065}, :place=>"Kenitra, Gharb-Chrarda-Beni Hssen"}, {:score=>12, :country=>"ca", :words=>"trovò.calore.perderò", :rank=>2, :geometry=>{:lng=>-65.036149, :lat=>45.846472}, :place=>"Salisbury, New Brunswick"}, {:score=>17, :country=>"ve", :words=>"trovò.calore.prede", :rank=>3, :geometry=>{:lng=>-70.280645, :lat=>7.24527}, :place=>"Guasdualito, Apure"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
-Supported keyword params for `reverse` call:
+Supported keyword params for `autosuggest` call:
+  * `format` Return data format type; can be one of json (the default), geojson or xml
+  * `display` Return display type; can be one of full (the default) or terse
+
+### Standardblend
+Returns a blend of the three most relevant 3 word address candidates for a given location, based on a full or partial 3 word address.
+
+The specified 3 word address may either be a full 3 word address or a partial 3 word address containing the first 2 words in full and at least 1 character of the 3rd word. The standardblend resource provides the search logic that powers the search box on map.what3words.com and in the what3words mobile apps.
+
+see https://docs.what3words.com/api/v2/#standardblend for detailed information
+
+Gets blends in italian for this address
+
+    what3words.standardblend "trovò.calore.perder", "it"
+    # => {:blends=>[{:country=>"ma", :words=>"trovò.calore.perdere", :rank=>1, :language=>"it", :geometry=>{:lng=>-6.665638, :lat=>34.318065}, :place=>"Kenitra, Gharb-Chrarda-Beni Hssen"}, {:country=>"ca", :words=>"trovò.calore.perderò", :rank=>2, :language=>"it", :geometry=>{:lng=>-65.036149, :lat=>45.846472}, :place=>"Salisbury, New Brunswick"}, {:country=>"ve", :words=>"trovò.calore.prede", :rank=>3, :language=>"it", :geometry=>{:lng=>-70.280645, :lat=>7.24527}, :place=>"Guasdualito, Apure"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+
+Supported keyword params for `standardblend` call:
+  * `format` Return data format type; can be one of json (the default), geojson or xml
+  * `display` Return display type; can be one of full (the default) or terse
+
+### Grid
+Returns a section of the 3m x 3m what3words grid for a given area.
+
+see https://docs.what3words.com/api/v2/#grid for detailed information
+
+Gets blends in italian for this address
+
+    what3words.grid "52.208867,0.117540,52.207988,0.116126"
+    # => {:lines=>[{:start=>{:lng=>0.11612600000001, :lat=>52.208009918068}, :end=>{:lng=>0.11753999999999, :lat=>52.208009918068}}, ___...___ , :end=>{:lng=>0.11752023935234, :lat=>52.208867}}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+
+Supported keyword params for `grid` call:
   * `format` Return data format type; can be one of json (the default), geojson or xml
   * `display` Return display type; can be one of full (the default) or terse
 

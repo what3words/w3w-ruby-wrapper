@@ -18,7 +18,9 @@ module What3Words
       :forward => "forward",
       :reverse => "reverse",
       :languages => "languages",
-      :autosuggest => "autosuggest"
+      :autosuggest => "autosuggest",
+      :standardblend => "standardblend",
+      :grid => "grid"
     }
 
     def initialize(params)
@@ -40,6 +42,12 @@ module What3Words
       response
     end
 
+    def grid(bbox, params = {})
+      request_params = assemble_grid_request_params(bbox, params)
+      response = request! :grid, request_params
+      response
+    end
+
     def languages()
       request_params = assemble_common_request_params({})
       response = request! :languages, request_params
@@ -49,6 +57,12 @@ module What3Words
     def autosuggest(addr, lang, focus = {}, clip = {}, params = {})
       request_params = assemble_autosuggest_request_params(addr, lang, focus, clip, params)
       response = request! :autosuggest, request_params
+      response
+    end
+
+    def standardblend(addr, lang, focus = {}, params = {})
+      request_params = assemble_standardblend_request_params(addr, lang, focus, params)
+      response = request! :standardblend, request_params
       response
     end
 
@@ -67,6 +81,12 @@ module What3Words
     end
     private :assemble_forward_request_params
 
+    def assemble_grid_request_params(bbox, params)
+      h = {:bbox => bbox}
+      h.merge(assemble_common_request_params(params))
+    end
+    private :assemble_grid_request_params
+
     def assemble_reverse_request_params(position, params)
       h = {:coords => position.join(",")}
       h.merge(assemble_common_request_params(params))
@@ -83,6 +103,16 @@ module What3Words
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_autosuggest_request_params
+
+    def assemble_standardblend_request_params(addr, lang, focus, params)
+      h = {:addr => addr}
+      h[:lang] = lang
+      if focus.respond_to? :join
+        h[:focus] = focus.join(",")
+      end
+      h.merge(assemble_common_request_params(params))
+    end
+    private :assemble_standardblend_request_params
 
     def request!(endpoint_name, params)
       # puts endpoint_name.inspect
