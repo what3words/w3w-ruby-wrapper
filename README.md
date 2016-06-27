@@ -136,11 +136,14 @@ See http://developer.what3words.com for the original API call documentation
 
 ### Testing
 
- Prerequisite : we are using [bundler](https://rubygems.org/gems/bundler)
-    `$ gem install bundler`
+* Prerequisite : we are using [bundler](https://rubygems.org/gems/bundler) `$ gem install bundler`
 
+* W3W-API-KEY : For safe storage of your API key on your computer, you can define that API key using your system’s environment variables.
+```bash
+$ export W3W_API_KEY=<Secret API Key>
+```
+
+* on you cloned folder
 1. `$ cd w3w-ruby-wrapper`
 1. `$ bundle update`
 1. `$ rake spec`
-1. Mock Unit specs require no set up. Look in `spec/mock/`
-1. Integration specs that hit the API directly are in `spec/what3words`, and need the file `spec/config.yaml` to be filled in (using `spec/config.sample.yaml` as a template) with valid details.

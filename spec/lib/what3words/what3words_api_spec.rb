@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require "spec_helper"
-require "yaml"
 
 describe What3Words::API, "integration", :integration => true do
 
@@ -9,15 +8,7 @@ describe What3Words::API, "integration", :integration => true do
     WebMock.allow_net_connect!
   end
 
-  let!(:config) do
-    file = "spec/config.yaml"
-    if ! File.exist? file
-      raise "Add a file #{file} (use spec/config.sample.yaml as a template) with correct values to run integration specs"
-    end
-    YAML.load_file file
-  end
-
-  let(:api_key) { config["api_key"] }
+  let(:api_key) { ENV["W3W_API_KEY"] }
 
   let(:w3w) { described_class.new(:key => api_key) }
 
@@ -76,35 +67,42 @@ describe What3Words::API, "integration", :integration => true do
   end
   describe "autosuggest" do
     it "simple addr" do
-      result = w3w.autosuggest "trop.caler.perdre", "fr"
+      # result =
+      w3w.autosuggest "trop.caler.perdre", "fr"
     end
 
     it "with focus" do
-      result = w3w.autosuggest "disclose.strain.redefin", "en", [29.567041, 106.587875]
+      # result =
+      w3w.autosuggest "disclose.strain.redefin", "en", [29.567041, 106.587875]
     end
 
     it "with clipping radius around focus" do
-      result = w3w.autosuggest "disclose.strain.redefin", "en", [29.567041, 106.587875], "focus(10)"
+      # result =
+      w3w.autosuggest "disclose.strain.redefin", "en", [29.567041, 106.587875], "focus(10)"
     end
 
   end
   describe "standardblend" do
     it "simple addr" do
-      result = w3w.standardblend "trop.caler.perdre", "fr"
+      # result =
+      w3w.standardblend "trop.caler.perdre", "fr"
     end
 
     it "with focus" do
-      result = w3w.standardblend "disclose.strain.redefin", "en", [29.567041, 106.587875]
+      # result =
+      w3w.standardblend "disclose.strain.redefin", "en", [29.567041, 106.587875]
     end
   end
   describe "grid" do
     it "string input" do
-      result = w3w.grid "52.208867,0.117540,52.207988,0.116126"      
+      # result =
+      w3w.grid "52.208867,0.117540,52.207988,0.116126"
     end
   end
   describe "languages" do
     it "gets all languages" do
-      result = w3w.languages
+      # result =
+      w3w.languages
     end
   end
 
