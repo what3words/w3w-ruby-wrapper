@@ -70,7 +70,7 @@ module What3Words
       h = {:key => key}
       h[:lang] = params[:lang] if params[:lang]
       h[:format] = params[:format] if params[:format]
-      h[:display] = params[:format] if params[:format]
+      h[:display] = params[:display] if params[:display]
       h
     end
     private :assemble_common_request_params
