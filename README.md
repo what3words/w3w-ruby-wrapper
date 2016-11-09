@@ -1,4 +1,4 @@
-# ![what3words](https://map.what3words.com/images/map/marker-border.png)what3words Ruby wrapper
+# <img src="https://what3words.com/wp-content/uploads/2015/10/what3words-pin-red2.jpg" width="56" height="64" alt="what3words">&nbsp;what3words Ruby wrapper
 ![Build Status](https://travis-ci.org/what3words/w3w-ruby-wrapper.svg?branch=master)
 
 Use the what3words API in your Ruby app (see http://developer.what3words.com/api)
