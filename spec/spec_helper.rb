@@ -1,7 +1,7 @@
-require "bundler/setup"
+require 'bundler/setup'
 
 Bundler.setup
 
-require "webmock/rspec"
+require 'webmock/rspec'
 
-require "what3words"
+require 'what3words'
