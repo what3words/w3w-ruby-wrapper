@@ -59,7 +59,7 @@ describe What3Words::API, "integration", :integration => true do
     it "from position in fr" do
       result = w3w.reverse [29.567041, 106.587875], :lang => "fr"
       expect(result).to include(
-        :words => "courgette.spécieuse.infrason",
+        :words => "courgette.rabotons.infrason",
         :language => "fr"
       )
     end
