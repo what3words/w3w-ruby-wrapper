@@ -1,4 +1,4 @@
-# <img src="https://what3words.com/wp-content/uploads/2015/10/what3words-pin-red2.jpg" width="56" height="64" alt="what3words">&nbsp;what3words Ruby wrapper
+# <img src="https://what3words.com/assets/images/w3w_square_red.png" width="32" height="32" alt="what3words">&nbsp;what3words Ruby wrapper
 ![Build Status](https://travis-ci.org/what3words/w3w-ruby-wrapper.svg?branch=master)
 
 Use the what3words API in your Ruby app (see http://developer.what3words.com/api)
@@ -110,7 +110,7 @@ Returns a section of the 3m x 3m what3words grid for a given area.
 
 see https://docs.what3words.com/api/v2/#grid for detailed information
 
-Gets blends in italian for this address
+Gets grid for these bounding box northeast 52.208867,0.117540, southwest 52.207988,0.116126
 
     what3words.grid "52.208867,0.117540,52.207988,0.116126"
     # => {:lines=>[{:start=>{:lng=>0.11612600000001, :lat=>52.208009918068}, :end=>{:lng=>0.11753999999999, :lat=>52.208009918068}}, ___...___ , :end=>{:lng=>0.11752023935234, :lat=>52.208867}}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
@@ -123,7 +123,7 @@ Supported keyword params for `grid` call:
 Get list of available 3 word languages
 
     what3words.languages
-    # => {:languages=>[{:name=>"German", :native_name=>"Deutsch  (beta)", :code=>"de"}, {:name=>"Italian", :native_name=>"Italiano  (beta)", :code=>"it"}, {:name=>"Turkish", :native_name=>"Türkçe  (beta)", :code=>"tr"}, {:name=>"Portuguese", :native_name=>"Português  (beta)", :code=>"pt"}, {:name=>"French", :native_name=>"français, langue française  (beta)", :code=>"fr"}, {:name=>"Swedish", :native_name=>"svenska  (beta)", :code=>"sv"}, {:name=>"English", :native_name=>"English", :code=>"en"}, {:name=>"Russian", :native_name=>"русский язык  (beta)", :code=>"ru"}, {:name=>"Spanish; Castilian", :native_name=>"español, castellano  (beta)", :code=>"es"}, {:name=>"Swahili", :native_name=>"Kiswahili  (beta)", :code=>"sw"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    # => {{:languages=>[{:code=>"de", :name=>"German", :native_name=>"Deutsch"}, {:code=>"mn", :name=>"Mongolian", :native_name=>"Mонгол"}, {:code=>"fi", :name=>"Finnish", :native_name=>"Suomi"}, {:code=>"ru", :name=>"Russian", :native_name=>"Русский"}, {:code=>"sv", :name=>"Swedish", :native_name=>"Svenska"}, {:code=>"pt", :name=>"Portuguese", :native_name=>"Português"}, {:code=>"sw", :name=>"Swahili", :native_name=>"Kiswahili"}, {:code=>"en", :name=>"English", :native_name=>"English"}, {:code=>"it", :name=>"Italian", :native_name=>"Italiano"}, {:code=>"fr", :name=>"French", :native_name=>"Français"}, {:code=>"es", :name=>"Spanish", :native_name=>"Español"}, {:code=>"ar", :name=>"Arabic", :native_name=>"العربية"}, {:code=>"pl", :name=>"Polish", :native_name=>"Polski"}, {:code=>"tr", :name=>"Turkish", :native_name=>"Türkçe"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
 
 See http://developer.what3words.com for the original API call documentation
 
