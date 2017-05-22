@@ -205,6 +205,7 @@ Anyone and everyone is welcome to contribute.
 
 # Revision History
 
+* `v2.1.1`  22/05/17 - Update gemspec to use rubocop 0.48.1, and fixes spec accordingly
 * `v2.1.0`  28/03/17 - Added multilingual version of `autosuggest` and `standardblend`
 * `v2.0.4`  27/03/17 - Updated README with `languages` method result updated from live result
 * `v2.0.3`  24/10/16 - Fixed `display` in `assemble_common_request_params`
