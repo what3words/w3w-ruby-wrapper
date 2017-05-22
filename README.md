@@ -190,9 +190,14 @@ $ export W3W_API_KEY=<Secret API Key>
 1. `$ bundle update`
 1. `$ rake rubocop spec`
 
-## Contributing
+## Issues
 
-1. Fork it ( http://github.com/what3words/w3w-ruby-wrapper and click "Fork" )
+Find a bug or want to request a new feature? Please let us know by submitting an issue.
+
+## Contributing
+Anyone and everyone is welcome to contribute.
+
+1. Fork it (http://github.com/what3words/w3w-ruby-wrapper and click "Fork")
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -205,3 +210,9 @@ $ export W3W_API_KEY=<Secret API Key>
 * `v2.0.3`  24/10/16 - Fixed `display` in `assemble_common_request_params`
 * `v2.0.2`  10/06/16 - Added travis-ci builds
 * `v2.0.0`  10/06/16 - Updated wrapper to use what3words API v2
+
+## Licensing
+
+The MIT License (MIT)
+
+A copy of the license is available in the repository's [license](LICENSE.txt) file.
