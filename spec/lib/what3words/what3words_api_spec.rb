@@ -14,7 +14,7 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
 
   it 'returns errors from API' do
     badw3w = described_class.new(key: '')
-    expect { badw3w.forward %w(prom cape pump) }
+    expect { badw3w.forward 'prom.cape.pump' }
       .to raise_error described_class::ResponseError
   end
 
@@ -32,7 +32,7 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     it 'sends lang parameter for 3 words' do
-      result = w3w.forward %w(prom cape pump), lang: 'fr'
+      result = w3w.forward 'prom.cape.pump', lang: 'fr'
       expect(result).to include(
         words: 'concevoir.époque.amasser',
         language: 'fr'
