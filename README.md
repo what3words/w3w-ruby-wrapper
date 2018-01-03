@@ -185,7 +185,7 @@ See http://developer.what3words.com for the original API call documentation
 $ export W3W_API_KEY=<Secret API Key>
 ```
 
-* on you cloned folder
+* on your cloned folder
 1. `$ cd w3w-ruby-wrapper`
 1. `$ bundle update`
 1. `$ rake rubocop spec`
