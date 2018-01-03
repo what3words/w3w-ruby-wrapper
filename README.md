@@ -1,5 +1,6 @@
 # <img src="https://what3words.com/assets/images/w3w_square_red.png" width="32" height="32" alt="what3words">&nbsp;what3words Ruby wrapper
-![Build Status](https://travis-ci.org/what3words/w3w-ruby-wrapper.svg?branch=master)
+
+[![Build Status](https://travis-ci.org/what3words/w3w-ruby-wrapper.svg?branch=master)](https://travis-ci.org/what3words/w3w-ruby-wrapper)
 
 Use the what3words API in your Ruby app (see http://developer.what3words.com/api)
 
