@@ -7,8 +7,8 @@ Use the what3words API in your Ruby app (see http://developer.what3words.com/api
 
 Add this line to your application's Gemfile:
 
-```shell
-    gem 'what3words', '~> 2.1'
+```
+    gem 'what3words', '~> 2.2'
 ```
 
 And then execute:
@@ -198,13 +198,15 @@ Find a bug or want to request a new feature? Please let us know by submitting an
 Anyone and everyone is welcome to contribute.
 
 1. Fork it (http://github.com/what3words/w3w-ruby-wrapper and click "Fork")
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Commit your changes (`git commit -am 'Add some feature'`)
+1. Don't forget to update README and bump [version](./lib/what3words/version.rb) using [semver](https://semver.org/)
+1. Push to the branch (`git push origin my-new-feature`)
+1. Create new Pull Request
 
 # Revision History
 
+* `v2.2.0`  03/01/18 - Enforce Ruby 2.4 Support - Thanks to PR from Dimitrios Zorbas [@Zorbash](https://github.com/zorbash)
 * `v2.1.1`  22/05/17 - Update gemspec to use rubocop 0.48.1, and fixes spec accordingly
 * `v2.1.0`  28/03/17 - Added multilingual version of `autosuggest` and `standardblend`
 * `v2.0.4`  27/03/17 - Updated README with `languages` method result updated from live result
