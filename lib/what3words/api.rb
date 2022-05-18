@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'rest-client'
+require_relative 'version'
 
 module What3Words
   # Document the responsibility of the class
@@ -20,9 +21,6 @@ module What3Words
       convert_to_3wa: 'convert-to-3wa',
       available_languages: 'available_languages',
       autosuggest: 'autosuggest',
-      standardblend: 'standardblend',
-      autosuggest_ml: 'autosuggest-ml',
-      standardblend_ml: 'standardblend-ml',
       grid_section: 'grid_section'
     }.freeze
 
@@ -34,13 +32,13 @@ module What3Words
 
     def convert_to_coordinates(words, params = {})
       words_string = get_words_string words
-      request_params = assemble_forward_request_params(words_string, params)
+      request_params = assemble_convert_to_coordinates_request_params(words_string, params)
       response = request! :convert_to_coordinates, request_params
       response
     end
 
     def convert_to_3wa(position, params = {})
-      request_params = assemble_reverse_request_params(position, params)
+      request_params = assemble_convert_to_3wa_request_params(position, params)
       response = request! :convert_to_3wa, request_params
       response
     end
@@ -64,53 +62,31 @@ module What3Words
       response
     end
 
-    def autosuggest_ml(addr, language, focus = {}, clip = {}, params = {})
-      request_params = assemble_autosuggest_request_params(addr, language, focus,
-                                                           clip, params)
-      response = request! :autosuggest_ml, request_params
-      response
-    end
-
-    def standardblend(addr, language, focus = {}, params = {})
-      request_params = assemble_standardblend_request_params(addr, language, focus,
-                                                             params)
-      response = request! :standardblend, request_params
-      response
-    end
-
-    def standardblend_ml(addr, language, focus = {}, params = {})
-      request_params = assemble_standardblend_request_params(addr, language, focus,
-                                                             params)
-      response = request! :standardblend_ml, request_params
-      response
-    end
-
     def assemble_common_request_params(params)
       h = { key: key }
-      h[:language] = params[:language] if params[:language]
       h[:format] = params[:format] if params[:format]
-      h[:display] = params[:display] if params[:display]
       h
     end
     private :assemble_common_request_params
 
-    def assemble_forward_request_params(words_string, params)
-      h = { addr: words_string }
+    def assemble_convert_to_coordinates_request_params(words_string, params)
+      h = { words: words_string }
       h.merge(assemble_common_request_params(params))
     end
-    private :assemble_forward_request_params
+    private :assemble_convert_to_coordinates_request_params
+
+    def assemble_convert_to_3wa_request_params(position, params)
+      h = { coordinates: position.join(',') }
+      h[:language] = params[:language] if params[:language]
+      h.merge(assemble_common_request_params(params))
+    end
+    private :assemble_convert_to_3wa_request_params
 
     def assemble_grid_request_params(bbox, params)
       h = { bbox: bbox }
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_grid_request_params
-
-    def assemble_reverse_request_params(position, params)
-      h = { coordinates: position.join(',') }
-      h.merge(assemble_common_request_params(params))
-    end
-    private :assemble_reverse_request_params
 
     def assemble_autosuggest_request_params(addr, language, focus, clip, params)
       h = { addr: addr }
@@ -121,17 +97,10 @@ module What3Words
     end
     private :assemble_autosuggest_request_params
 
-    def assemble_standardblend_request_params(addr, language, focus, params)
-      h = { addr: addr }
-      h[:language] = language
-      h[:focus] = focus.join(',') if focus.respond_to? :join
-      h.merge(assemble_common_request_params(params))
-    end
-    private :assemble_standardblend_request_params
-
     def request!(endpoint_name, params)
       # puts endpoint_name.inspect
       # puts params.inspect
+      # ADD HEADERS - THIS IS A PYTHON EXAMPLE headers = {'X-W3W-Wrapper': 'what3words-Ruby/{} (Ruby {}; {})'.format(__version__, platform.python_version(), platform.platform())}
       begin
         response = RestClient.get endpoint(endpoint_name), params: params
       rescue => e
