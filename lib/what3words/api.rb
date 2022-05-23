@@ -1,7 +1,8 @@
 # encoding: utf-8
 
 require 'rest-client'
-require_relative 'version'
+require File.expand_path('../version', __FILE__)
+require 'what3words/version'
 
 module What3Words
   # Document the responsibility of the class
@@ -17,12 +18,14 @@ module What3Words
     BASE_URL = 'https://api.what3words.com/v3/'.freeze
 
     ENDPOINTS = {
-      convert_to_coordinates: 'convert_to_coordinates',
+      convert_to_coordinates: 'convert-to-coordinates',
       convert_to_3wa: 'convert-to-3wa',
-      available_languages: 'available_languages',
+      available_languages: 'available-languages',
       autosuggest: 'autosuggest',
-      grid_section: 'grid_section'
+      grid_section: 'grid-section'
     }.freeze
+
+    WRAPPER_VERSION = What3Words::VERSION
 
     def initialize(params)
       @key = params.fetch(:key)
@@ -33,6 +36,8 @@ module What3Words
     def convert_to_coordinates(words, params = {})
       words_string = get_words_string words
       request_params = assemble_convert_to_coordinates_request_params(words_string, params)
+      puts 'c2c'
+      puts request_params.inspect
       response = request! :convert_to_coordinates, request_params
       response
     end
@@ -64,6 +69,7 @@ module What3Words
 
     def assemble_common_request_params(params)
       h = { key: key }
+      h[:language] = params[:language] if params[:language]
       h[:format] = params[:format] if params[:format]
       h
     end
@@ -77,7 +83,7 @@ module What3Words
 
     def assemble_convert_to_3wa_request_params(position, params)
       h = { coordinates: position.join(',') }
-      h[:language] = params[:language] if params[:language]
+      # h[:language] = params[:language] if params[:language]
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_convert_to_3wa_request_params
@@ -98,17 +104,25 @@ module What3Words
     private :assemble_autosuggest_request_params
 
     def request!(endpoint_name, params)
-      # puts endpoint_name.inspect
-      # puts params.inspect
+      # puts endpoint(endpoint_name).inspect
+      puts '----request---'
+      puts params.inspect
+
       # ADD HEADERS - THIS IS A PYTHON EXAMPLE headers = {'X-W3W-Wrapper': 'what3words-Ruby/{} (Ruby {}; {})'.format(__version__, platform.python_version(), platform.platform())}
       begin
         response = RestClient.get endpoint(endpoint_name), params: params
       rescue => e
+        puts 'x03'
+        puts e.inspect
+        # puts e.methods.sort
         response = e.response
       end
       # puts '#{response.to_str}'
       # puts 'Response status: #{response.code}'
+      
       response = JSON.parse(response.body)
+      puts 'x04'
+      puts response.inspect
       if response['code'].to_s.strip != ''
         raise ResponseError, "#{response['code']}: #{response['message']}"
       end
@@ -117,6 +131,7 @@ module What3Words
     private :request!
 
     def get_words_string(words)
+      puts words.inspect
       if words.respond_to? :to_str
         w = words
       elsif words.respond_to? :join
