@@ -138,17 +138,17 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
   #   end
   # end
 
-  # describe 'available_languages' do
-  #   it 'gets all available_languages' do
-  #     # result =
-  #     w3w.available_languages
-  #   end
-  # end
+  describe 'available_languages' do
+    it 'gets all available_languages' do
+      # result =
+      w3w.available_languages
+    end
+  end
 
-  # describe 'technical' do
-  #   it '\'s deep_symbolize_keys helper works' do
-  #     expect(w3w.deep_symbolize_keys('foo' => { 'bar' => true }))
-  #       .to eq(foo: { bar: true })
-  #   end
-  # end
+  describe 'technical' do
+    it '\'s deep_symbolize_keys helper works' do
+      expect(w3w.deep_symbolize_keys('foo' => { 'bar' => true }))
+        .to eq(foo: { bar: true })
+    end
+  end
 end

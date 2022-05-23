@@ -83,7 +83,6 @@ module What3Words
 
     def assemble_convert_to_3wa_request_params(position, params)
       h = { coordinates: position.join(',') }
-      # h[:language] = params[:language] if params[:language]
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_convert_to_3wa_request_params
@@ -123,7 +122,8 @@ module What3Words
       response = JSON.parse(response.body)
       puts 'x04'
       puts response.inspect
-      if response['code'].to_s.strip != ''
+
+      if response['error'].to_s.strip != ''
         raise ResponseError, "#{response['code']}: #{response['message']}"
       end
       deep_symbolize_keys(response)
