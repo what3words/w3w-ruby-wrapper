@@ -60,9 +60,8 @@ module What3Words
       response
     end
 
-    def autosuggest(addr, language, focus = {}, clip = {}, params = {})
-      request_params = assemble_autosuggest_request_params(addr, language, focus,
-                                                           clip, params)
+    def autosuggest(input, params = {})
+      request_params = assemble_autosuggest_request_params(input, params)
       response = request! :autosuggest, request_params
       response
     end
@@ -88,23 +87,29 @@ module What3Words
     private :assemble_convert_to_3wa_request_params
 
     def assemble_grid_request_params(bbox, params)
-      h = { bbox: bbox }
+      h = { 'bounding-box': bbox }
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_grid_request_params
 
-    def assemble_autosuggest_request_params(addr, language, focus, clip, params)
-      h = { addr: addr }
-      h[:language] = language
-      h[:focus] = focus.join(',') if focus.respond_to? :join
-      h[:clip] = clip if clip.respond_to? :to_str
+    def assemble_autosuggest_request_params(input, params)
+      h = { input: input }
+      h[:'n-results'] = params[:'n-results'].to_i if params[:'n-results']
+      h[:focus] = params[:focus].join(',') if params[:focus].respond_to? :join 
+      h[:'n-focus-results'] = params[:'n-focus-results'].to_i if params[:'n-focus-results']
+      # h[:'clip-to-country'] = clip_to_country if clip_to_country.respond_to? :to_str
+      # h[:'clip-to-bounding-box'] = clip_to_bounding_box if clip_to_bounding_box.respond_to? :to_str
+      # h[:'clip-to-circle'] = clip_to_circle if clip_to_circle.respond_to? :to_str
+      # h[:'clip-to-polygon'] = clip_to_polygon if clip_to_polygon.respond_to? :to_str
+      # h[:'input-type'] = input_type
+      # h[:'prefer-land'] = prefer_land
       h.merge(assemble_common_request_params(params))
     end
     private :assemble_autosuggest_request_params
 
     def request!(endpoint_name, params)
-      # puts endpoint(endpoint_name).inspect
       puts '----request---'
+      puts endpoint(endpoint_name).inspect
       puts params.inspect
 
       # ADD HEADERS - THIS IS A PYTHON EXAMPLE headers = {'X-W3W-Wrapper': 'what3words-Ruby/{} (Ruby {}; {})'.format(__version__, platform.python_version(), platform.platform())}
