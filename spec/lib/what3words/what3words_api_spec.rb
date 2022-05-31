@@ -101,18 +101,14 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
   describe 'autosuggest' do
     it 'single input returns suggestions' do
       # @:param string input: The full or partial 3 word address to obtain
-      # suggestions for. At minimum this must be the
-      # first two complete words plus at least one
-      # character from the third word
+      # suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
       result = w3w.autosuggest 'disclose.strain.redefin'
       expect(result).not_to be_empty
     end
 
     it 'simple input will return 3 suggestions' do
       # @:param string input: The full or partial 3 word address to obtain
-      # suggestions for. At minimum this must be the
-      # first two complete words plus at least one
-      # character from the third word
+      # suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
       result = w3w.autosuggest 'disclose.strain.redefin', language: 'en'
       n_default_results = result[:suggestions].count
       expect(n_default_results).to eq(3)
@@ -139,9 +135,7 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     it 'with n-results' do
-      # @:param int n_results: The number of AutoSuggest results to return. A maximum of 100 
-      # results can be specified, if a number greater than this is 
-      # requested, this will be truncated to the maximum. The default is 3
+      # @:param int n_results: The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
       result = w3w.autosuggest 'disclose.strain.redefin', language: 'en', 'n-results': 10
       # puts result[:suggestions].count
       n_results = result[:suggestions].count
@@ -162,14 +156,20 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     it 'with input-type' do
       # @:param string input_type: For power users, used to specify voice input mode. Can be 
       # text (default), vocon-hybrid, nmdp-asr or generic-voice.
-      result = w3w.autosuggest 'disclose.strain.redefin', 'input-type': 'text'
+      result = w3w.autosuggest 'fun with code', 'input-type': 'generic-voice', language: 'en'
+      suggestions = result[:suggestions]
+      output = ["fund.with.code","funk.with.code","fund.with.cove"]
+      suggestions.each_with_index do |item, index|
+        # puts item[:words]
+        expect(item[:words]).to eq(output[index])
+      end
+
       expect(result).not_to be_empty
     end
 
     xit 'with prefer-land' do
       # @:param string prefer_land: Makes autosuggest prefer results on land to those in the sea. 
-      # This setting is on by default. Use false to disable this setting and 
-      # receive more suggestions in the sea.
+      # This setting is on by default. Use false to disable this setting and receive more suggestions in the sea.
       result_sea = w3w.autosuggest 'disclose.strain.redefin', 'prefer-land': false, 'n-results': 10
       result_sea_suggestions = result_sea[:suggestions]
 
