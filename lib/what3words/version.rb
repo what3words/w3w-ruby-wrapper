@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# What3Words v3 API wrapper
 module What3Words
-  VERSION = '3.0.0'.freeze unless defined?(::What3Words::VERSION)
+  VERSION = '3.0.0' unless defined?(::What3Words::VERSION)
 end

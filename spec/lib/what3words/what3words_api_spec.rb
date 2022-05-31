@@ -1,18 +1,15 @@
-# encoding: utf-8
+# frozen_string_literal: true
 
 require 'spec_helper'
 
 # to run the test type on terminal --> bundle exec rspec
 
-# rubocop:disable Metrics/LineLength
-describe What3Words::API, 'integration', integration: true do # rubocop:disable Metrics/BlockLength
-  # rubocop:enable Metrics/LineLength
+describe What3Words::API, 'integration', integration: true do
   before(:all) do
     WebMock.allow_net_connect!
   end
 
   let(:api_key) { ENV['W3W_API_KEY'] }
-  
   let(:w3w) { described_class.new(key: api_key) }
 
   it 'returns errors from API' do
@@ -66,10 +63,10 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
           }
         },
         nearestPlace: 'Kensington, London',
-          'coordinates': {
-            'lng': -0.195405,
-            'lat': 51.484463
-          },
+        coordinates: {
+          'lng': -0.195405,
+          'lat': 51.484463
+        },
         map: 'https://w3w.co/prom.cape.pump'
       )
     end
@@ -101,14 +98,16 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
   describe 'autosuggest' do
     it 'single input returns suggestions' do
       # @:param string input: The full or partial 3 word address to obtain
-      # suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
+      # suggestions for. At minimum this must be the first two complete words
+      # plus at least one character from the third word.
       result = w3w.autosuggest 'disclose.strain.redefin'
       expect(result).not_to be_empty
     end
 
     it 'simple input will return 3 suggestions' do
       # @:param string input: The full or partial 3 word address to obtain
-      # suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
+      # suggestions for. At minimum this must be the first two complete words
+      # plus at least one character from the third word.
       result = w3w.autosuggest 'disclose.strain.redefin', language: 'en'
       n_default_results = result[:suggestions].count
       expect(n_default_results).to eq(3)
@@ -119,8 +118,8 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
       # ISO 639-1 2 letter code.
       result = w3w.autosuggest 'trop.caler.perdre', language: 'fr'
       language = result[:suggestions]
-      language.each do |k|
-        k.each do |k,v|
+      language.each do |item|
+        item.each do |k, v|
           if k == 'language'
             expect(v).to eq('fr')
           end
@@ -129,13 +128,14 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     it 'sends arabic language as a different input' do
-      
       result = w3w.autosuggest 'مربية.الصباح.المده', language: 'ar'
       expect(result).not_to be_empty
     end
 
     it 'with n-results' do
-      # @:param int n_results: The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
+      # @:param int n_results: The number of AutoSuggest results to return.
+      # A maximum of 100 results can be specified, if a number greater than this is
+      # requested, this will be truncated to the maximum. The default is 3.
       result = w3w.autosuggest 'disclose.strain.redefin', language: 'en', 'n-results': 10
       # puts result[:suggestions].count
       n_results = result[:suggestions].count
@@ -143,22 +143,22 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     it 'with n-focus-results' do
-      # @:param int n_focus_results: Specifies the number of results (must be <= n_results) 
-      # within the results set which will have a focus. Defaults to 
-      # n_results. This allows you to run autosuggest with a mix of 
+      # @:param int n_focus_results: Specifies the number of results (must be <= n_results)
+      # within the results set which will have a focus. Defaults to
+      # n_results. This allows you to run autosuggest with a mix of
       # focussed and unfocussed results, to give you a "blend" of the two.
-      result = w3w.autosuggest 'disclose.strain.redefin', language: 'en', 'n-focus-results': 10
+      result = w3w.autosuggest 'disclose.strain.redefin', language: 'en', 'n-focus-results': 3
       # puts result[:suggestions].count
       n_focus_results = result[:suggestions].count
       expect(n_focus_results).to be >= 3
     end
 
-    it 'with input-type' do
-      # @:param string input_type: For power users, used to specify voice input mode. Can be 
+    it 'with input-type chenged to generic-voice' do
+      # @:param string input-type: For power users, used to specify voice input mode. Can be
       # text (default), vocon-hybrid, nmdp-asr or generic-voice.
       result = w3w.autosuggest 'fun with code', 'input-type': 'generic-voice', language: 'en'
       suggestions = result[:suggestions]
-      output = ["fund.with.code","funk.with.code","fund.with.cove"]
+      output = ['fund.with.code', 'funk.with.code', 'fund.with.cove']
       suggestions.each_with_index do |item, index|
         # puts item[:words]
         expect(item[:words]).to eq(output[index])
@@ -168,7 +168,7 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     xit 'with prefer-land' do
-      # @:param string prefer_land: Makes autosuggest prefer results on land to those in the sea. 
+      # @:param string prefer-land: Makes autosuggest prefer results on land to those in the sea.
       # This setting is on by default. Use false to disable this setting and receive more suggestions in the sea.
       result_sea = w3w.autosuggest 'disclose.strain.redefin', 'prefer-land': false, 'n-results': 10
       result_sea_suggestions = result_sea[:suggestions]
@@ -180,15 +180,15 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     it 'with clip_to_country' do
-      # @:param string clip-to-country: Restricts autosuggest to only return results inside the 
-      # countries specified by comma-separated list of uppercase ISO 3166-1 
-      # alpha-2 country codes (for example, to restrict to Belgium and the 
+      # @:param string clip-to-country: Restricts autosuggest to only return results inside the
+      # countries specified by comma-separated list of uppercase ISO 3166-1
+      # alpha-2 country codes (for example, to restrict to Belgium and the
       # UK, use clip_to_country="GB,BE")
       result = w3w.autosuggest 'disclose.strain.redefin', 'clip-to-country': 'GB,BE'
       country = result[:suggestions]
       country.each do |item|
-        item.each do |k,v|
-          if k == 'country' 
+        item.each do |k, v|
+          if k == 'country'
             if v == 'GB'
               expect(v).to eq('GB')
             else
@@ -200,66 +200,64 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
     end
 
     it 'with clip-to-bounding-box' do
-      # @:param clip-to-bounding-box: Restrict autosuggest results to a bounding 
+      # @:param clip-to-bounding-box: Restrict autosuggest results to a bounding
       # box, specified by coordinates.
-      result = w3w.autosuggest 'disclose.strain.redefin','clip-to-bounding-box': [51.521,-0.343,52.6,2.3324]
+      result = w3w.autosuggest 'disclose.strain.redefin', 'clip-to-bounding-box': [51.521, -0.343, 52.6, 2.3324]
       suggestions = result[:suggestions]
       expect(suggestions).to include(
-        country: "GB",
-        nearestPlace: "Saxmundham, Suffolk",
-        words: "discloses.strain.reddish",
+        country: 'GB',
+        nearestPlace: 'Saxmundham, Suffolk',
+        words: 'discloses.strain.reddish',
         rank: 1,
-        language: "en",
+        language: 'en'
       )
     end
 
     it 'with clip-to-bounding-box raise BadClipToBoundingBox error with 3 coordinates' do
-      # @:param clip-to-bounding-box: Restrict autosuggest results to a bounding 
+      # @:param clip-to-bounding-box: Restrict autosuggest results to a bounding
       # box, specified by coordinates.
-      expect { w3w.autosuggest 'disclose.strain.redefin','clip-to-bounding-box': [51.521,-0.343,52.6] }
+      expect { w3w.autosuggest 'disclose.strain.redefin', 'clip-to-bounding-box': [51.521, -0.343, 52.6] }
         .to raise_error described_class::ResponseError
-        # {"error"=>{"code"=>"BadClipToBoundingBox", "message"=>"Must be four lat,lng,lat,lng coordinates such as 50,-2,53.12,2.34"}}
     end
 
     it 'with clip-to-bounding-box raise 2nd BadClipToBoundingBox error' do
-      # @:param clip-to-bounding-box: Restrict autosuggest results to a bounding 
+      # @:param clip-to-bounding-box: Restrictautosuggest results to a bounding
       # box, specified by coordinates.
-      expect { w3w.autosuggest 'disclose.strain.redefin','clip-to-bounding-box': [51.521,-0.343,55.521,-5.343] }
+      expect { w3w.autosuggest 'disclose.strain.redefin', 'clip-to-bounding-box': [51.521, -0.343, 55.521, -5.343] }
         .to raise_error described_class::ResponseError
-        # {"error"=>{"code"=>"BadClipToBoundingBox", "message"=>"First lng must be <= second lng. South,west,north,east expected."}}    end
     end
 
     it 'with clip-to-circle' do
       # @:param clip-to-circle: Restrict autosuggest results to a circle, specified by
-      # the center of the circle, latitude and longitude, and a distance in 
-      # kilometres which represents the radius. For convenience, longitude 
-      # is allowed to wrap around 180 degrees. For example 181 is equivalent 
+      # the center of the circle, latitude and longitude, and a distance in
+      # kilometres which represents the radius. For convenience, longitude
+      # is allowed to wrap around 180 degrees. For example 181 is equivalent
       # to -179.
-      result = w3w.autosuggest 'disclose.strain.redefin','clip-to-circle': [51.521,-0.343,142]
+      result = w3w.autosuggest 'disclose.strain.redefin', 'clip-to-circle': [51.521, -0.343, 142]
       suggestions = result[:suggestions]
       expect(suggestions).to include(
-        country: "GB",
-        nearestPlace: "Market Harborough, Leicestershire",
-        words: "discloses.strain.reduce",
+        country: 'GB',
+        nearestPlace: 'Market Harborough, Leicestershire',
+        words: 'discloses.strain.reduce',
         rank: 1,
-        language: "en",
+        language: 'en'
       )
     end
 
     it 'with clip-to-polygon' do
-      # @:param clip-to-polygon: Restrict autosuggest results to a polygon, 
-      # specified by a list of coordinates. The polygon 
-      # should be closed, i.e. the first element should be repeated as the 
-      # last element; also the list should contain at least 4 entries. 
+      # @:param clip-to-polygon: Restrict autosuggest results to a polygon,
+      # specified by a list of coordinates. The polygon
+      # should be closed, i.e. the first element should be repeated as the
+      # last element; also the list should contain at least 4 entries.
       # The API is currently limited to accepting up to 25 pairs.
-      result = w3w.autosuggest 'disclose.strain.redefin','clip-to-polygon': [51.521,-0.343,52.6,2.3324,54.234,8.343,51.521,-0.343]
+      result = w3w.autosuggest 'disclose.strain.redefin', 'clip-to-polygon': [51.521, -0.343, 52.6, 2.3324, 54.234, 8.343, 51.521, -0.343]
       suggestions = result[:suggestions]
       expect(suggestions).to include(
-        country: "GB",
-        nearestPlace: "Saxmundham, Suffolk",
-        words: "discloses.strain.reddish",
+        country: 'GB',
+        nearestPlace: 'Saxmundham, Suffolk',
+        words: 'discloses.strain.reddish',
         rank: 1,
-        language: "en",
+        language: 'en'
       )
     end
   end
@@ -273,7 +271,7 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
       expect(result).not_to be_empty
     end
     it 'bad bounding box error if the bbox is greater 4km' do
-      expect{ w3w.grid_section '50.0,178,50.01,180.0005'}
+      expect { w3w.grid_section '50.0,178,50.01,180.0005' }
         .to raise_error described_class::ResponseError
     end
   end
@@ -288,7 +286,7 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
       result = w3w.available_languages
       expect(result).not_to be_empty
     end
-  end 
+  end
 
   describe 'technical' do
     it '\'s deep_symbolize_keys helper works' do
@@ -296,5 +294,4 @@ describe What3Words::API, 'integration', integration: true do # rubocop:disable 
         .to eq(foo: { bar: true })
     end
   end
-
 end
