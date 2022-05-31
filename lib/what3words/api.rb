@@ -178,13 +178,10 @@ module What3Words
       
       # puts endpoint(endpoint_name).inspect
       # puts params.inspect
-
-      # ADD HEADERS - THIS IS A PYTHON EXAMPLE headers = {'X-W3W-Wrapper': 'what3words-Ruby/{} (Ruby {}; {})'.format(__version__, platform.python_version(), platform.platform())}
       begin
-        
-        response = RestClient.get endpoint(endpoint_name), params: params
+        headers = {"X-W3W-Wrapper": "what3words-Ruby/#{WRAPPER_VERSION}"}
+        response = RestClient.get endpoint(endpoint_name), params: params, headers: headers
       rescue => e
-        # puts 'x03'
         # puts e.inspect
         # puts e.methods.sort
         response = e.response
@@ -193,7 +190,6 @@ module What3Words
       # puts 'Response status: #{response.code}'
       
       response = JSON.parse(response.body)
-      # puts 'x04'
       # puts response.inspect
 
       if response['error'].to_s.strip != ''
