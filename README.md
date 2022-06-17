@@ -2,14 +2,14 @@
 
 [![Build Status](https://travis-ci.org/what3words/w3w-ruby-wrapper.svg?branch=master)](https://travis-ci.org/what3words/w3w-ruby-wrapper)
 
-Use the what3words API in your Ruby app (see http://developer.what3words.com/api)
+Use the what3words API in your Ruby app [see https://developer.what3words.com/public-api](https://developer.what3words.com/public-api)
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```
-    gem 'what3words', '~> 2.2'
+    gem 'what3words', '~> 3.0'
 ```
 
 And then execute:
@@ -26,10 +26,9 @@ Or install it yourself as:
 
 ## Usage
 
-Sign up for an API key at http://developer.what3words.com
+Sign up for an API key at [https://developer.what3words.com](https://developer.what3words.com)
 
-See https://docs.what3words.com/api/v2/ for all parameters that can be
-passed to the API calls
+See [https://developer.what3words.com/public-api/docs](https://developer.what3words.com/public-api/docs) for all parameters that can be passed to the API calls.
 
 If not using Bundler, require it:
 
@@ -43,47 +42,47 @@ Then:
     what3words = What3Words::API.new(:key => "YOURAPIKEY")
 ```
 
-Forward Geocode : convert a 3 word address into GPS coordinates (WGS-84)
+Convert to Coordinates: convert a 3 word address into GPS coordinates (WGS84)
 
 ```ruby
-    what3words.forward 'prom.cape.pump'
-    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"prom.cape.pump", :map=>"http://w3w.co/prom.cape.pump", :language=>"en", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.convert_to_coordinates 'prom.cape.pump'
+    # => {:country=>"GB", :square=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :nearestPlace=>"Kensington, London", :coordinates=>{:lng=>-0.195405, :lat=>51.484463}, :words=>"prom.cape.pump", :language=>"en", :map=>"https://w3w.co/prom.cape.pump"}
 ```
 
 ## API
-### Forward Geocoding
-Convert a 3 word address into GPS coordinates and return 3 words for the same position in a different language
+### Convert to Coordinates
+Convert a 3 word address into GPS coordinates and return 3 words for the same position.
 
 ```ruby
-    what3words.forward "prom.cape.pump", :lang => "fr"
-    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"concevoir.époque.amasser", :map=>"http://w3w.co/concevoir.époque.amasser", :language=>"fr", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.convert_to_coordinates "prom.cape.pump"
+    # => {:country=>"GB", :square=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :nearestPlace=>"Kensington, London", :coordinates=>{:lng=>-0.195405, :lat=>51.484463}, :words=>"prom.cape.pump", :language=>"en", :map=>"https://w3w.co/prom.cape.pump"}
 ```
-Supported keyword params for `forward` call:
+Supported keyword params for `convert_to_coordinates` call:
 
-* `lang` (defaults to language of 3 words)  - optional language code (only use this if you want to return 3 words in a different language to the language submitted)
-* `format` Return data format type; can be one of json (the default), geojson or xml
-* `display` Return display type; can be one of full (the default) or terse
+* `words` A 3 word address as a string
+* `format`  Return data format type. It can be one of json (the default) or geojson
 
-### Reverse Geocoding
-Reverse Geocode : Convert position(latitude) information to a 3 word address
+
+### Convert to 3WA
+Convert position information, latitude and longitude coordinates, into a 3 word address.
 
 ```ruby
-    what3words.reverse [51.484463, -0.195405]
-    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"prom.cape.pump", :map=>"http://w3w.co/prom.cape.pump", :language=>"en", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
-    ```
+    what3words.convert_to_3wa [29.567041, 106.587875]
+    # => {:country=>"CN", :square=>{:southwest=>{:lng=>106.58786, :lat=>29.567028}, :northeast=>{:lng=>106.587891, :lat=>29.567055}}, :nearestPlace=>"Chongqing", :coordinates=>{:lng=>106.587875, :lat=>29.567041}, :words=>"disclose.strain.redefined", :language=>"en", :map=>"https://w3w.co/disclose.strain.redefined"}
+```
 
 Convert position information to a 3 word address in a specific language
 
 ```ruby
-    what3words.reverse [51.484463, -0.195405], :lang => :fr
-    # => {:crs=>{:properties=>{:type=>"ogcwkt", :href=>"http://spatialreference.org/ref/epsg/4326/ogcwkt/"}, :type=>"link"}, :bounds=>{:southwest=>{:lng=>-0.195426, :lat=>51.484449}, :northeast=>{:lng=>-0.195383, :lat=>51.484476}}, :words=>"concevoir.époque.amasser", :map=>"http://w3w.co/concevoir.époque.amasser", :language=>"fr", :geometry=>{:lng=>-0.195405, :lat=>51.484463}, :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.convert_to_3wa [29.567041, 106.587875], language: 'fr'
+    # => :country=>"CN", :square=>{:southwest=>{:lng=>106.58786, :lat=>29.567028}, :northeast=>{:lng=>106.587891, :lat=>29.567055}}, :nearestPlace=>"Chongqing", :coordinates=>{:lng=>106.587875, :lat=>29.567041}, :words=>"courgette.rabotons.infrason", :language=>"fr", :map=>"https://w3w.co/courgette.rabotons.infrason"}
 ```
 
-Supported keyword params for `reverse` call:
+Supported keyword params for `convert_to_3wa` call:
 
-* `lang` (defaults to en)  - optional language code
-* `format` Return data format type; can be one of json (the default), geojson or xml
-* `display` Return display type; can be one of full (the default) or terse
+* `coordinates` The coordinates of the location to convert to 3 word address
+* `language` (defaults to en) - A supported 3 word address language as an ISO 639-1 2 letter code
+* `format` Return data format type. It can be one of json (the default) or geojson
 
 ### Autosuggest
 Returns a list of 3 word addresses based on user input and other parameters.
@@ -96,92 +95,115 @@ This resource provides corrections for the following types of input error:
 
 The autosuggest resource determines possible corrections to the supplied 3 word address string based on the probability of the input errors listed above and returns a ranked list of suggestions. This resource can also take into consideration the geographic proximity of possible corrections to a given location to further improve the suggestions returned.
 
-*Single and Multilingual Variants*
+See [https://developer.what3words.com/public-api/docs#autosuggest](https://developer.what3words.com/public-api/docs#autosuggest) for detailed information
 
-AutoSuggest is provided via 2 variant resources; single language and multilingual.
-
-The single language `autosuggest` method  requires a language to be specified.
-
-The multilingual `autosuggest_ml`  method  requires a language to be specified. This will ensure that the autosuggest-ml resource will look for suggestions in this language, in addition to any other languages that yield relevant suggestions.
-
-see https://docs.what3words.com/api/v2/#autosuggest for detailed information
-
-Gets suggestions in italian for this address
+Gets suggestions in french for this address:
 
 ```ruby
-    what3words.autosuggest "trovò.calore.perder", "it"
-    # => {:suggestions=>[{:score=>12, :country=>"ma", :words=>"trovò.calore.perdere", :rank=>1, :geometry=>{:lng=>-6.665638, :lat=>34.318065}, :place=>"Kenitra, Gharb-Chrarda-Beni Hssen"}, {:score=>12, :country=>"ca", :words=>"trovò.calore.perderò", :rank=>2, :geometry=>{:lng=>-65.036149, :lat=>45.846472}, :place=>"Salisbury, New Brunswick"}, {:score=>17, :country=>"ve", :words=>"trovò.calore.prede", :rank=>3, :geometry=>{:lng=>-70.280645, :lat=>7.24527}, :place=>"Guasdualito, Apure"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.autosuggest 'trop.caler.perdre', language: 'fr'
+    # => {:suggestions=>[{:country=>"FR", :nearestPlace=>"Saint-Lary-Soulan, Hautes-Pyrénées", :words=>"trier.caler.perdre", :rank=>1, :language=>"fr"}, {:country=>"ET", :nearestPlace=>"Asbe Teferi, Oromiya", :words=>"trôler.caler.perdre", :rank=>2, :language=>"fr"}, {:country=>"CN", :nearestPlace=>"Ulanhot, Inner Mongolia", :words=>"froc.caler.perdre", :rank=>3, :language=>"fr"}]}
 ```
+
+Gets suggestions for a different number of suggestions, i.e. 10 for this address:
 
 ```ruby
-    what3words.autosuggest_ml "trovò.calore.perder", "it"
+    what3words.autosuggest 'disclose.strain.redefin', language: 'en', 'n-results': 10
+    # => {:suggestions=>[{:country=>"SO", :nearestPlace=>"Jamaame, Lower Juba", :words=>"disclose.strain.redefine", :rank=>1, :language=>"en"}, {:country=>"ZW", :nearestPlace=>"Mutoko, Mashonaland East", :words=>"discloses.strain.redefine", :rank=>2, :language=>"en"}, {:country=>"MM", :nearestPlace=>"Mogok, Mandalay", :words=>"disclose.strains.redefine", :rank=>3, :language=>"en"}, {:country=>"CN", :nearestPlace=>"Chongqing", :words=>"disclose.strain.redefined", :rank=>4, :language=>"en"}, {:country=>"ZM", :nearestPlace=>"Binga, Matabeleland North", :words=>"disclosing.strain.redefine", :rank=>5, :language=>"en"}, {:country=>"XH", :nearestPlace=>"Leh, Ladakh", :words=>"disclose.straining.redefine", :rank=>6, :language=>"en"}, {:country=>"US", :nearestPlace=>"Kamas, Utah", :words=>"disclose.strain.redefining", :rank=>7, :language=>"en"}, {:country=>"GN", :nearestPlace=>"Boké", :words=>"disclose.strained.redefine", :rank=>8, :language=>"en"}, {:country=>"BO", :nearestPlace=>"Pailón, Santa Cruz", :words=>"discloses.strains.redefine", :rank=>9, :language=>"en"}, {:country=>"US", :nearestPlace=>"McGrath, Alaska", :words=>"discloses.strain.redefined", :rank=>10, :language=>"en"}]}
 ```
 
-Supported keyword params for `autosuggest` and `autosuggest_ml` call:
-  * `format` Return data format type; can be one of json (the default), geojson or xml
-  * `display` Return display type; can be one of full (the default) or terse
-
-### Standardblend
-Returns a blend of the three most relevant 3 word address candidates for a given location, based on a full or partial 3 word address.
-
-The specified 3 word address may either be a full 3 word address or a partial 3 word address containing the first 2 words in full and at least 1 character of the 3rd word. The standardblend resource provides the search logic that powers the search box on map.what3words.com and in the what3words mobile apps.
-
-*Single and Multilingual Variants*
-
-AutoSuggest is provided via 2 variant resources; single language and multilingual.
-
-The single language `standardblend` method  requires a language to be specified.
-
-The multilingual `standardblend_ml`  method  requires a language to be specified. This will ensure that the standardblend-ml resource will look for suggestions in this language, in addition to any other languages that yield relevant suggestions.
-
-see https://docs.what3words.com/api/v2/#standardblend for detailed information
-
-Gets blends in italian for this address
+Gets suggestions for a different number of focus results for this address:
 
 ```ruby
-    what3words.standardblend "trovò.calore.perder", "it"
-    # => {:blends=>[{:country=>"ma", :words=>"trovò.calore.perdere", :rank=>1, :language=>"it", :geometry=>{:lng=>-6.665638, :lat=>34.318065}, :place=>"Kenitra, Gharb-Chrarda-Beni Hssen"}, {:country=>"ca", :words=>"trovò.calore.perderò", :rank=>2, :language=>"it", :geometry=>{:lng=>-65.036149, :lat=>45.846472}, :place=>"Salisbury, New Brunswick"}, {:country=>"ve", :words=>"trovò.calore.prede", :rank=>3, :language=>"it", :geometry=>{:lng=>-70.280645, :lat=>7.24527}, :place=>"Guasdualito, Apure"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.autosuggest 'disclose.strain.redefin', language: 'en', 'n-focus-results': 3
+    # => {:suggestions=>[{:country=>"SO", :nearestPlace=>"Jamaame, Lower Juba", :words=>"disclose.strain.redefine", :rank=>1, :language=>"en"}, {:country=>"ZW", :nearestPlace=>"Mutoko, Mashonaland East", :words=>"discloses.strain.redefine", :rank=>2, :language=>"en"}, {:country=>"MM", :nearestPlace=>"Mogok, Mandalay", :words=>"disclose.strains.redefine", :rank=>3, :language=>"en"}]}
 ```
+
+Gets suggestions for a voice input type mode, i.e. generic-voice, for this address:
 
 ```ruby
-    what3words.standardblend_ml "trovò.calore.perder", "it"
+    what3words.autosuggest 'fun with code', 'input-type': 'generic-voice', language: 'en'
+    # => {:suggestions=>[{:country=>"US", :nearestPlace=>"Homer, Alaska", :words=>"fund.with.code", :rank=>1, :language=>"en"}, {:country=>"AU", :nearestPlace=>"Kumpupintil, Western Australia", :words=>"funk.with.code", :rank=>2, :language=>"en"}, {:country=>"US", :nearestPlace=>"Charleston, West Virginia", :words=>"fund.with.cove", :rank=>3, :language=>"en"}]}
 ```
 
-Supported keyword params for `standardblend` and `standardblend_ml` call:
-  * `format` Return data format type; can be one of json (the default), geojson or xml
-  * `display` Return display type; can be one of full (the default) or terse
+Gets suggestions for a restricted area by clipping to conutry for this address:
+
+```ruby
+    what3words.autosuggest 'disclose.strain.redefin', 'clip-to-country': 'GB,BE'
+    # => {:suggestions=>[{:country=>"GB", :nearestPlace=>"Nether Stowey, Somerset", :words=>"disclose.retrain.redefined", :rank=>1, :language=>"en"}, {:country=>"BE", :nearestPlace=>"Zemst, Flanders", :words=>"disclose.strain.reckon", :rank=>2, :language=>"en"}, {:country=>"GB", :nearestPlace=>"Waddington, Lincolnshire", :words=>"discloses.trains.redefined", :rank=>3, :language=>"en"}]}
+```
+
+Gets suggestions for a restricted area by clipping to a bounding-box for this address:
+
+```ruby
+    what3words.autosuggest 'disclose.strain.redefin', 'clip-to-bounding-box': [51.521, -0.343, 52.6, 2.3324]
+    # => {:suggestions=>[{:country=>"GB", :nearestPlace=>"Saxmundham, Suffolk", :words=>"discloses.strain.reddish", :rank=>1, :language=>"en"}]}
+```
+
+
+Gets suggestions for a restricted area by clipping to a circle in km for this address:
+
+```ruby
+    what3words.autosuggest 'disclose.strain.redefin', 'clip-to-circle': [51.521, -0.343, 142]
+    # => {:suggestions=>[{:country=>"GB", :nearestPlace=>"Market Harborough, Leicestershire", :words=>"discloses.strain.reduce", :rank=>1, :language=>"en"}]}
+```
+
+Gets suggestions for a restricted area by clipping to a polygon for this address:
+
+```ruby
+    what3words.autosuggest 'disclose.strain.redefin', 'clip-to-polygon': [51.521, -0.343, 52.6, 2.3324, 54.234, 8.343, 51.521, -0.343]
+    # => {:suggestions=>[{:country=>"GB", :nearestPlace=>"Saxmundham, Suffolk", :words=>"discloses.strain.reddish", :rank=>1, :language=>"en"}]}
+```
+
+Gets suggestions for a restricted area by clipping to a polygon for this address:
+
+```ruby
+    what3words.w3w.autosuggest 'disclose.strain.redefin', 'prefer-land': false, 'n-results': 10
+    # => {:suggestions=>[{:country=>"SO", :nearestPlace=>"Jamaame, Lower Juba", :words=>"disclose.strain.redefine", :rank=>1, :language=>"en"}, {:country=>"ZW", :nearestPlace=>"Mutoko, Mashonaland East", :words=>"discloses.strain.redefine", :rank=>2, :language=>"en"}, {:country=>"MM", :nearestPlace=>"Mogok, Mandalay", :words=>"disclose.strains.redefine", :rank=>3, :language=>"en"}, {:country=>"CN", :nearestPlace=>"Chongqing", :words=>"disclose.strain.redefined", :rank=>4, :language=>"en"}, {:country=>"ZM", :nearestPlace=>"Binga, Matabeleland North", :words=>"disclosing.strain.redefine", :rank=>5, :language=>"en"}, {:country=>"XH", :nearestPlace=>"Leh, Ladakh", :words=>"disclose.straining.redefine", :rank=>6, :language=>"en"}, {:country=>"US", :nearestPlace=>"Kamas, Utah", :words=>"disclose.strain.redefining", :rank=>7, :language=>"en"}, {:country=>"GN", :nearestPlace=>"Boké", :words=>"disclose.strained.redefine", :rank=>8, :language=>"en"}, {:country=>"BO", :nearestPlace=>"Pailón, Santa Cruz", :words=>"discloses.strains.redefine", :rank=>9, :language=>"en"}, {:country=>"US", :nearestPlace=>"McGrath, Alaska", :words=>"discloses.strain.redefined", :rank=>10, :language=>"en"}]}
+```
+
+Supported keyword params for `autosuggest` call:
+  * `input` The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+  * `language` A supported 3 word address language as an ISO 639-1 2 letter code. This setting is on by default. Use false to disable this setting and receive more suggestions in the sea.
+  * `n_results` The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3.
+  * `n_focus_results` Specifies the number of results (must be <= n_results) within the results set which will have a focus. Defaults to n_results. This allows you to run autosuggest with a mix of focussed and unfocussed results, to give you a "blend" of the two.
+  * `clip-to-country` Restricts autosuggest to only return results inside the countries specified by comma-separated list of uppercase ISO 3166-1 alpha-2 country codes (for example, to restrict to Belgium and the UK, use clip_to_country="GB,BE").
+  * `clip-to-bounding-box` Restrict autosuggest results to a bounding box, specified by coordinates.
+  * `clip-to-circle` Restrict autosuggest results to a circle, specified by the center of the circle, latitude and longitude, and a distance in kilometres which represents the radius. For convenience, longitude is allowed to wrap around 180 degrees. For example 181 is equivalent to -179.
+  * `clip-to-polygon` Restrict autosuggest results to a polygon, specified by a list of coordinates. The polygon should be closed, i.e. the first element should be repeated as the last element; also the list should contain at least 4 entries. The API is currently limited to accepting up to 25 pairs. 
+  * `input-type` For power users, used to specify voice input mode. Can be text (default), vocon-hybrid, nmdp-asr or generic-voice.
+  * `prefer-land` Makes autosuggest prefer results on land to those in the sea.
 
 ### Grid
 Returns a section of the 3m x 3m what3words grid for a given area.
 
-see https://docs.what3words.com/api/v2/#grid for detailed information
+See [https://developer.what3words.com/public-api/docs#grid-section](https://developer.what3words.com/public-api/docs#grid-section) for detailed information.
 
-Gets grid for these bounding box northeast 52.208867,0.117540, southwest 52.207988,0.116126
+Gets grid for these bounding box northeast 52.208867,0.117540,52.207988,0.116126.
 
 ```ruby
-    what3words.grid "52.208867,0.117540,52.207988,0.116126"
-    # => {:lines=>[{:start=>{:lng=>0.11612600000001, :lat=>52.208009918068}, :end=>{:lng=>0.11753999999999, :lat=>52.208009918068}}, ___...___ , :end=>{:lng=>0.11752023935234, :lat=>52.208867}}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.grid_section '52.208867,0.117540,52.207988,0.116126'
+    # => {:lines=>[{:start=>{:lng=>0.116126, :lat=>52.20801}, :end=>{:lng=>0.11754, :lat=>52.20801}}, {:start=>{:lng=>0.116126, :lat=>52.208037}, :end=>{:lng=>0.11754, :lat=>52.208037}}, {:start=>{:lng=>0.116126, :lat=>52.208064}, :end=>{:lng=>0.11754, :lat=>52.208064}}, ___...___ ]}
 ```
 
-Supported keyword params for `grid` call:
-  * `format` Return data format type; can be one of json (the default), geojson or xml
-  * `display` Return display type; can be one of full (the default) or terse
+Supported keyword params for `grid_section` call:
+  * `bounding-box` The bounding box is specified by the northeast and southwest corner coordinates, for which the grid should be returned
+  * `format` Return data format type. It can be one of json (the default) or geojson
 
 ### Get Languages
-Get list of available 3 word languages
+Retrieve a list of available 3 word languages.
 
 ```ruby
-    what3words.languages
-    # => {{:languages=>[{:code=>"de", :name=>"German", :native_name=>"Deutsch"}, {:code=>"mn", :name=>"Mongolian", :native_name=>"Mонгол"}, {:code=>"fi", :name=>"Finnish", :native_name=>"Suomi"}, {:code=>"ru", :name=>"Russian", :native_name=>"Русский"}, {:code=>"sv", :name=>"Swedish", :native_name=>"Svenska"}, {:code=>"pt", :name=>"Portuguese", :native_name=>"Português"}, {:code=>"sw", :name=>"Swahili", :native_name=>"Kiswahili"}, {:code=>"en", :name=>"English", :native_name=>"English"}, {:code=>"it", :name=>"Italian", :native_name=>"Italiano"}, {:code=>"fr", :name=>"French", :native_name=>"Français"}, {:code=>"es", :name=>"Spanish", :native_name=>"Español"}, {:code=>"ar", :name=>"Arabic", :native_name=>"العربية"}, {:code=>"pl", :name=>"Polish", :native_name=>"Polski"}, {:code=>"tr", :name=>"Turkish", :native_name=>"Türkçe"}], :status=>{:status=>200, :reason=>"OK"}, :thanks=>"Thanks from all of us at index.home.raft for using a what3words API"}
+    what3words.available_languages
+    # => {:languages=>[{:nativeName=>"Deutsch", :code=>"de", :name=>"German"}, {:nativeName=>"हिन्दी", :code=>"hi", :name=>"Hindi"}, {:nativeName=>"Português", :code=>"pt", :name=>"Portuguese"}, {:nativeName=>"Magyar", :code=>"hu", :name=>"Hungarian"}, {:nativeName=>"Українська", :code=>"uk", :name=>"Ukrainian"}, {:nativeName=>"Bahasa Indonesia", :code=>"id", :name=>"Bahasa Indonesia"}, {:nativeName=>"اردو", :code=>"ur", :name=>"Urdu"}, ___...___]}
 ```
 
-See http://developer.what3words.com for the original API call documentation
+See [https://developer.what3words.com/public-api/docs#available-languages](https://developer.what3words.com/public-api/docs#available-languages) for the original API call documentation.
 
 ## Testing
 
 * Prerequisite : we are using [bundler](https://rubygems.org/gems/bundler) `$ gem install bundler`
 
-* W3W-API-KEY : For safe storage of your API key on your computer, you can define that API key using your system’s environment variables.
+* W3W-API-KEY: For safe storage of your API key on your computer, you can define that API key using your system’s environment variables.
 ```bash
 $ export W3W_API_KEY=<Secret API Key>
 ```
@@ -190,6 +212,11 @@ $ export W3W_API_KEY=<Secret API Key>
 1. `$ cd w3w-ruby-wrapper`
 1. `$ bundle update`
 1. `$ rake rubocop spec`
+
+To run the tests, type on your terminal:
+```bash
+$ bundle exec rspec
+```
 
 ## Issues
 
@@ -207,6 +234,7 @@ Anyone and everyone is welcome to contribute.
 
 # Revision History
 
+* `v3.0.0`  12/05/22 - Update endpoints and tests to API v3, added HTTP headers   
 * `v2.2.0`  03/01/18 - Enforce Ruby 2.4 Support - Thanks to PR from Dimitrios Zorbas [@Zorbash](https://github.com/zorbash)
 * `v2.1.1`  22/05/17 - Update gemspec to use rubocop 0.48.1, and fixes spec accordingly
 * `v2.1.0`  28/03/17 - Added multilingual version of `autosuggest` and `standardblend`
