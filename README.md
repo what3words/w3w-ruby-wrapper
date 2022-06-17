@@ -2,11 +2,17 @@
 
 [![Build Status](https://travis-ci.org/what3words/w3w-ruby-wrapper.svg?branch=master)](https://travis-ci.org/what3words/w3w-ruby-wrapper)
 
-Use the what3words API in your Ruby app [see https://developer.what3words.com/public-api](https://developer.what3words.com/public-api)
+The Ruby wrapper is useful for Ruby developers who wish to seamlessly integrate the [what3words Public API](https://developer.what3words.com/public-api) into their Ruby applications, without the hassle of having to manage the low level API calls themselves.
+
+The what3words API is a fast, simple interface which allows you to convert 3 word addresses such as `///index.home.raft` to latitude and longitude coordinates such as `-0.203586, 51.521251` and vice versa. It features a powerful autosuggest function, which can validate and autocorrect user input and limit it to certain geographic areas (this powers the search box on our map site). It allows you to request a section of the what3words grid (which can be requested as GeoJSON for easy display on online maps), and to request the list of all languages supported by what3words. For advanced users, autosuggest can be used to post-process voice output.
+
+All coordinates are latitude,longitude pairs in standard `WGS-84` (as commonly used worldwide in GPS systems). All latitudes must be in the range of `-90 to 90 (inclusive)`.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+The library is available through [RubyGems](https://rubygems.org/gems/what3words).
+
+You can simply add this line to your application's Gemfile:
 
 ```
     gem 'what3words', '~> 3.0'
@@ -169,7 +175,7 @@ Supported keyword params for `autosuggest` call:
   * `clip-to-country` Restricts autosuggest to only return results inside the countries specified by comma-separated list of uppercase ISO 3166-1 alpha-2 country codes (for example, to restrict to Belgium and the UK, use clip_to_country="GB,BE").
   * `clip-to-bounding-box` Restrict autosuggest results to a bounding box, specified by coordinates.
   * `clip-to-circle` Restrict autosuggest results to a circle, specified by the center of the circle, latitude and longitude, and a distance in kilometres which represents the radius. For convenience, longitude is allowed to wrap around 180 degrees. For example 181 is equivalent to -179.
-  * `clip-to-polygon` Restrict autosuggest results to a polygon, specified by a list of coordinates. The polygon should be closed, i.e. the first element should be repeated as the last element; also the list should contain at least 4 entries. The API is currently limited to accepting up to 25 pairs. 
+  * `clip-to-polygon` Restrict autosuggest results to a polygon, specified by a list of coordinates. The polygon should be closed, i.e. the first element should be repeated as the last element; also the list should contain at least 4 entries. The API is currently limited to accepting up to 25 pairs.
   * `input-type` For power users, used to specify voice input mode. Can be text (default), vocon-hybrid, nmdp-asr or generic-voice.
   * `prefer-land` Makes autosuggest prefer results on land to those in the sea.
 
@@ -234,7 +240,7 @@ Anyone and everyone is welcome to contribute.
 
 # Revision History
 
-* `v3.0.0`  12/05/22 - Update endpoints and tests to API v3, added HTTP headers   
+* `v3.0.0`  12/05/22 - Update endpoints and tests to API v3, added HTTP headers
 * `v2.2.0`  03/01/18 - Enforce Ruby 2.4 Support - Thanks to PR from Dimitrios Zorbas [@Zorbash](https://github.com/zorbash)
 * `v2.1.1`  22/05/17 - Update gemspec to use rubocop 0.48.1, and fixes spec accordingly
 * `v2.1.0`  28/03/17 - Added multilingual version of `autosuggest` and `standardblend`
