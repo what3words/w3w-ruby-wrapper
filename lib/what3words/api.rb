@@ -83,6 +83,10 @@ module What3Words
       #   @:param int n_results: The number of AutoSuggest results to return.
       #     A maximum of 100 results can be specified, if a number greater than this is requested,
       #     this will be truncated to the maximum. The default is 3.
+      #   @:param focus: A location, specified as a latitude,longitude used
+      #     to refine the results. If specified, the results will be weighted to give preference to those near
+      #     the specified location in addition to considering similarity to the suggest string. If omitted the
+      #     default behaviour is to weight results for similarity to the suggest string only.
       #   @:param int n_focus_results: Specifies the number of results (must be <= n_results)
       #     within the results set which will have a focus. Defaults to n_results.
       #     This allows you to run autosuggest with a mix of focussed and unfocussed results,
@@ -156,6 +160,10 @@ module What3Words
       #   @:param int n_results: The number of AutoSuggest results to return.
       #     A maximum of 100 results can be specified, if a number greater than this is requested,
       #     this will be truncated to the maximum. The default is 3.
+      #   @:param focus: A location, specified as a latitude,longitude used
+      #     to refine the results. If specified, the results will be weighted to give preference to those near
+      #     the specified location in addition to considering similarity to the suggest string. If omitted the
+      #     default behaviour is to weight results for similarity to the suggest string only.
       #   @:param int n_focus_results: Specifies the number of results (must be <= n_results)
       #     within the results set which will have a focus. Defaults to n_results.
       #     This allows you to run autosuggest with a mix of
@@ -210,7 +218,7 @@ module What3Words
       if response['error'].to_s.strip != ''
         raise ResponseError, "#{response['code']}: #{response['message']}"
       end
-      
+
       deep_symbolize_keys(response)
 
     end

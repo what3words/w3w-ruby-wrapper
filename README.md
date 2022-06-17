@@ -117,6 +117,13 @@ Gets suggestions for a different number of suggestions, i.e. 10 for this address
     # => {:suggestions=>[{:country=>"SO", :nearestPlace=>"Jamaame, Lower Juba", :words=>"disclose.strain.redefine", :rank=>1, :language=>"en"}, {:country=>"ZW", :nearestPlace=>"Mutoko, Mashonaland East", :words=>"discloses.strain.redefine", :rank=>2, :language=>"en"}, {:country=>"MM", :nearestPlace=>"Mogok, Mandalay", :words=>"disclose.strains.redefine", :rank=>3, :language=>"en"}, {:country=>"CN", :nearestPlace=>"Chongqing", :words=>"disclose.strain.redefined", :rank=>4, :language=>"en"}, {:country=>"ZM", :nearestPlace=>"Binga, Matabeleland North", :words=>"disclosing.strain.redefine", :rank=>5, :language=>"en"}, {:country=>"XH", :nearestPlace=>"Leh, Ladakh", :words=>"disclose.straining.redefine", :rank=>6, :language=>"en"}, {:country=>"US", :nearestPlace=>"Kamas, Utah", :words=>"disclose.strain.redefining", :rank=>7, :language=>"en"}, {:country=>"GN", :nearestPlace=>"Boké", :words=>"disclose.strained.redefine", :rank=>8, :language=>"en"}, {:country=>"BO", :nearestPlace=>"Pailón, Santa Cruz", :words=>"discloses.strains.redefine", :rank=>9, :language=>"en"}, {:country=>"US", :nearestPlace=>"McGrath, Alaska", :words=>"discloses.strain.redefined", :rank=>10, :language=>"en"}]}
 ```
 
+Gets suggestions when the coordinates for focus has been provided for this address:
+
+```ruby
+    what3words.autosuggest 'filled.count.soap', focus: [51.4243877,-0.34745]
+    # => {:suggestions=>[{:country=>"US", :nearestPlace=>"Homer, Alaska", :words=>"fund.with.code", :rank=>1, :language=>"en"}, {:country=>"AU", :nearestPlace=>"Kumpupintil, Western Australia", :words=>"funk.with.code", :rank=>2, :language=>"en"}, {:country=>"US", :nearestPlace=>"Charleston, West Virginia", :words=>"fund.with.cove", :rank=>3, :language=>"en"}]}
+```
+
 Gets suggestions for a different number of focus results for this address:
 
 ```ruby
