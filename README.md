@@ -138,7 +138,7 @@ Gets suggestions for a voice input type mode, i.e. generic-voice, for this addre
     # => {:suggestions=>[{:country=>"US", :nearestPlace=>"Homer, Alaska", :words=>"fund.with.code", :rank=>1, :language=>"en"}, {:country=>"AU", :nearestPlace=>"Kumpupintil, Western Australia", :words=>"funk.with.code", :rank=>2, :language=>"en"}, {:country=>"US", :nearestPlace=>"Charleston, West Virginia", :words=>"fund.with.cove", :rank=>3, :language=>"en"}]}
 ```
 
-Gets suggestions for a restricted area by clipping to conutry for this address:
+Gets suggestions for a restricted area by clipping to country for this address:
 
 ```ruby
     what3words.autosuggest 'disclose.strain.redefin', 'clip-to-country': 'GB,BE'
