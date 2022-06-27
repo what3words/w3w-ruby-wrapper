@@ -100,7 +100,7 @@ describe What3Words::API, 'integration', integration: true do
       # @:param string input: The full or partial 3 word address to obtain
       # suggestions for. At minimum this must be the first two complete words
       # plus at least one character from the third word.
-      result = w3w.autosuggest 'disclose.strain.redefin'
+      result = w3w.autosuggest 'filled.count.soap'
       expect(result).not_to be_empty
     end
 
@@ -140,6 +140,15 @@ describe What3Words::API, 'integration', integration: true do
       # puts result[:suggestions].count
       n_results = result[:suggestions].count
       expect(n_results).to be >= 10
+    end
+
+    it 'with focus' do
+      # @:param focus: A location, specified as a latitude,longitude used
+      # to refine the results. If specified, the results will be weighted to give preference to those near
+      # the specified location in addition to considering similarity to the suggest string. If omitted the
+      # default behaviour is to weight results for similarity to the suggest string only.
+      result = w3w.autosuggest 'filled.count.soap', focus: [51.4243877, -0.34745]
+      expect(result).not_to be_empty
     end
 
     it 'with n-focus-results' do
