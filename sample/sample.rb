@@ -55,5 +55,35 @@ res =  what3words.autosuggest 'fun with code', 'input-type': 'generic-voice', la
 puts '######### autosuggest with Generic Voice as input type ######### '
 puts res
 
+# ## isPossible3wa #########
+addresses = ["filled.count.soap", "not a 3wa", "not.3wa address"]
+addresses.each do |address|
+  is_possible = what3words.isPossible3wa(address)
+  puts "Is '#{address}' a possible what3words address? #{is_possible}"
+end
 
+# ## findPossible3wa #########
+texts = [
+  "Please leave by my porch at filled.count.soap",
+  "Please leave by my porch at filled.count.soap or deed.tulip.judge",
+  "Please leave by my porch at"
+]
+texts.each do |text|
+  possible_addresses = what3words.findPossible3wa(text)
+  puts "Possible what3words addresses in '#{text}': #{possible_addresses}"
+end
+
+# ## didYouMean #########
+addresses = ["filled-count-soap", "filled count soap", "invalid#address!example", "this is not a w3w address"]
+addresses.each do |address|
+  suggestion = what3words.didYouMean(address)
+  puts "Did you mean '#{address}'? #{suggestion}"
+end
+
+# ## isValid3wa #########
+addresses = ["filled.count.soap", "filled.count.", "coding.is.cool"]
+addresses.each do |address|
+  is_valid = what3words.isValid3wa(address)
+  puts "Is '#{address}' a valid what3words address? #{is_valid}"
+end
 
