@@ -149,6 +149,26 @@ module What3Words
       regex_match = /^\/?[^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<,.>?\/\";:£§º©®\s]{1,}[.\uFF61\u3002\uFF65\u30FB\uFE12\u17D4\u0964\u1362\u3002 ,\\\-\/+'&\\:;|\u3000]{1,2}[^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<,.>?\/\";:£§º©®\s]{1,}[.\uFF61\u3002\uFF65\u30FB\uFE12\u17D4\u0964\u1362\u3002 ,\\\-\/+'&\\:;|\u3000]{1,2}[^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<,.>?\/\";:£§º©®\s]{1,}$/
       !(text.match(regex_match).nil?)
     end
+    
+    def isValid3wa(text)
+      """
+      Determines if the string passed in is a real three word address. It calls the API
+      to verify it refers to an actual place on earth.
+
+      Params
+      ------
+      :param String text: text to check
+
+      :rtype: Boolean
+      """
+      if isPossible3wa(text)
+        result = autosuggest(text, 'n-results': 1)
+        if result[:suggestions] && result[:suggestions].length > 0
+          return result[:suggestions][0][:words] == text
+        end
+      end
+      false
+    end
 
     private
 

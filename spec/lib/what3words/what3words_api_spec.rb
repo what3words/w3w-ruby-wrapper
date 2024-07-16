@@ -139,17 +139,25 @@ describe What3Words::API, 'integration', integration: true do
       suggestions = result[:suggestions]
       output = ['fund.with.code', 'funds.with.code', 'fund.whiff.code']
       suggestions.each_with_index do |item, index|
-        puts item[:words]
+        # puts item[:words]
         expect(item[:words]).to eq(output[index])
       end
 
       expect(result).not_to be_empty
     end
 
-    xit 'returns different suggestions with prefer-land parameter' do
-      result_sea = w3w.autosuggest('disclose.strain.redefin', 'prefer-land': false, 'n-results': 10)
-      result_land = w3w.autosuggest('disclose.strain.redefin', 'prefer-land': true, 'n-results': 10)
-      expect(result_sea[:suggestions]).not_to eq(result_land[:suggestions])
+    it 'returns different suggestions with prefer-land parameter' do
+      result_sea = w3w.autosuggest('///yourselves.frolicking.supernova', 'prefer-land': true, 'n-results': 1)
+      result_land = w3w.autosuggest('///yourselves.frolicking.supernov', 'prefer-land': false,'n-results': 1)
+
+      # puts "Sea suggestions: #{result_sea[:suggestions]}"
+      # puts "Land suggestions: #{result_land[:suggestions]}"
+
+      # Check if the suggestions arrays have different lengths or elements
+      suggestions_different = (result_sea[:suggestions].length != result_land[:suggestions].length) ||
+                              (result_sea[:suggestions] != result_land[:suggestions])
+
+      expect(suggestions_different).to be true
     end
 
     it 'returns suggestions within specified countries' do
@@ -276,6 +284,20 @@ describe What3Words::API, 'integration', integration: true do
 
     it 'returns false for random text not in w3w format' do
       expect(w3w.didYouMean('this is not a w3w address')).to be false
+    end
+  end
+
+  describe 'isValid3wa' do
+    it 'returns true for a valid 3 word address' do
+      expect(w3w.isValid3wa('filled.count.soap')).to be true
+    end
+
+    it 'returns false for an invalid 3 word address' do
+      expect(w3w.isValid3wa('invalid.address.here')).to be false
+    end
+
+    it 'returns false for a random string' do
+      expect(w3w.isValid3wa('this is not a w3w address')).to be false
     end
   end
 

@@ -9,17 +9,20 @@ Gem::Specification.new do |spec|
   spec.version       = What3Words::VERSION
   spec.authors       = ['what3words']
   spec.email         = ['development@what3words.com']
-  spec.description   = 'A Ruby wrapper fo the what3words API'
+  spec.description   = 'A Ruby wrapper for the what3words API'
   spec.summary       = 'Ruby wrapper for the what3words API'
-  spec.homepage      = 'http://rubygems.org/gems/what3words'
+  spec.homepage      = 'https://github.com/what3words/w3w-ruby-wrapper'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0")
+  spec.files         = Dir["lib/**/*.rb", "README.md"]
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ['lib']
   spec.platform      = Gem::Platform::RUBY
   spec.required_ruby_version = '~> 2.6'
+
+  spec.metadata["documentation_uri"] = "https://www.rubydoc.info/gems/what3words"
+  spec.metadata["source_code_uri"] = "https://github.com/what3words/w3w-ruby-wrapper"
 
   spec.add_dependency('rest-client', '>= 1.8', '< 3.0')
 
