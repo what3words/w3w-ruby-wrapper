@@ -15,7 +15,7 @@ The library is available through [RubyGems](https://rubygems.org/gems/what3words
 You can simply add this line to your application's Gemfile:
 
 ```
-    gem 'what3words', '~> 3.1'
+    gem 'what3words', '~> 3.2'
 ```
 
 And then execute:
@@ -438,6 +438,7 @@ Anyone and everyone is welcome to contribute.
 
 # Revision History
 
+* `v3.2.0`  17/07/24 - Update regex patterns
 * `v3.1.0`  16/07/24 - Update tests and code to host the regex functions
 * `v3.0.0`  12/05/22 - Update endpoints and tests to API v3, added HTTP headers
 * `v2.2.0`  03/01/18 - Enforce Ruby 2.4 Support - Thanks to PR from Dimitrios Zorbas [@Zorbash](https://github.com/zorbash)
