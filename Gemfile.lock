@@ -31,7 +31,7 @@ GEM
     public_suffix (5.1.1)
     rainbow (2.2.2)
       rake
-    rake (11.3.0)
+    rake (12.3.3)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -71,10 +71,11 @@ GEM
 
 PLATFORMS
   universal-darwin-23
+  x86_64-linux
 
 DEPENDENCIES
   bundler (>= 1.7.9)
-  rake (~> 11.1)
+  rake (~> 12.3)
   rspec
   rubocop (~> 0.48.1)
   webmock (~> 3.0)
