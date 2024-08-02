@@ -33,6 +33,21 @@ describe What3Words::API, 'integration', integration: true do
       )
     end
 
+    it 'raises a ResponseError with the correct message when quota is exceeded' do
+      error_response = {
+        "error": {
+          "code": "QuotaExceeded",
+          "message": "Quota Exceeded. Please upgrade your usage plan, or contact support@what3words.com"
+        }
+      }.to_json
+
+      stub_request(:get, /api.what3words.com/).to_return(status: 402, body: error_response, headers: { content_type: 'application/json' })
+
+      expect {
+        w3w.convert_to_coordinates('filled.count.soap')
+      }.to raise_error(What3Words::API::ResponseError, 'QuotaExceeded: Quota Exceeded. Please upgrade your usage plan, or contact support@what3words.com')
+    end
+
     it 'sends language parameter for 3 words' do
       result = w3w.convert_to_coordinates('prom.cape.pump')
       expect(result).to include(
@@ -71,6 +86,7 @@ describe What3Words::API, 'integration', integration: true do
       )
     end
   end
+
 
   describe 'convert_to_3wa' do
     it 'converts coordinates to a 3 word address in English' do
