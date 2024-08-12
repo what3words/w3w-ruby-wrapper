@@ -9,7 +9,8 @@ module What3Words
   # What3Words v3 API wrapper
   class API
     class Error < RuntimeError; end
-    class ResponseError < Error; end
+    # class ResponseError < Error; end
+    class ResponseError < StandardError; end
     class WordError < Error; end
 
     REGEX_3_WORD_ADDRESS = /^\/*(?:[^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]{1,}[.｡。･・︒។։။۔።।][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]{1,}[.｡。･・︒។։။۔።।][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]{1,}|[<.,>?\/\";:£§º©®\s]+[.｡。･・︒។։။۔።।][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+|[^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+([\u0020\u00A0][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+){1,3}[.｡。･・︒។։။۔።।][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+([\u0020\u00A0][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+){1,3}[.｡。･・︒។։။۔።।][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+([\u0020\u00A0][^0-9`~!@#$%^&*()+\-_=\[\{\]}\\|'<>.,?\/\";:£§º©®\s]+){1,3})$/u.freeze
@@ -177,17 +178,34 @@ module What3Words
       response = RestClient.get(endpoint(endpoint_name), params: params, headers: headers)
       parsed_response = JSON.parse(response.body)
 
-      raise ResponseError, "#{parsed_response['code']}: #{parsed_response['message']}" if parsed_response['error'].to_s.strip != ''
+      if parsed_response['error']
+        error_code = parsed_response['error']['code']
+        error_message = parsed_response['error']['message']
+        raise ResponseError, "#{error_code}: #{error_message}"
+      end
 
       deep_symbolize_keys(parsed_response)
     rescue RestClient::ExceptionWithResponse => e
       handle_rest_client_error(e)
+    rescue RestClient::Exception => e
+      raise ResponseError, "RestClient error: #{e.message}"
     end
 
     def handle_rest_client_error(error)
-      parsed_response = JSON.parse(error.response)
-      raise ResponseError, "#{parsed_response['code']}: #{parsed_response['message']}" if parsed_response['error']
-      raise error
+      response = error.response
+      begin
+        parsed_response = JSON.parse(response.body)
+      rescue JSON::ParserError
+        raise ResponseError, "Invalid JSON response: #{response}"
+      end
+
+      if parsed_response['error']
+        error_code = parsed_response['error']['code']
+        error_message = parsed_response['error']['message']
+        raise ResponseError, "#{error_code}: #{error_message}"
+      else
+        raise ResponseError, "Unknown error: #{response}"
+      end
     end
 
     def get_words_string(words)
