@@ -1,0 +1,23 @@
+version: 2.1
+
+executors:
+  ruby-executor:
+    docker:
+      - image: cimg/ruby:2.7.2
+
+jobs:
+  ruby-test:
+    executor: ruby-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: bundle install
+      - run:
+          name: Run tests
+          command: bundle exec rspec
+
+workflows:
+  test:
+    jobs:
+      - ruby-test
