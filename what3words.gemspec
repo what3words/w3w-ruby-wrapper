@@ -19,7 +19,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ['lib']
   spec.platform      = Gem::Platform::RUBY
-  spec.required_ruby_version = '~> 2.6'
+  spec.required_ruby_version = '>= 2.6', '< 4.0'
+
 
   spec.metadata["documentation_uri"] = "https://www.rubydoc.info/gems/what3words"
   spec.metadata["source_code_uri"] = "https://github.com/what3words/w3w-ruby-wrapper"
