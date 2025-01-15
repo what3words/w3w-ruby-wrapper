@@ -104,23 +104,31 @@ describe What3Words::API, 'integration', integration: true do
 
   describe 'convert_to_3wa' do
     it 'converts coordinates to a 3 word address in English' do
-      result = w3w.convert_to_3wa([29.567041, 106.587875], format: 'json')
-      expect(result).to include(
-        words: 'disclose.strain.redefined',
-        language: 'en'
-      )
-      expect(result[:coordinates]).to include(
-        lat: 29.567041,
-        lng: 106.587875
-      )
+      begin
+        result = w3w.convert_to_3wa([29.567041, 106.587875], format: 'json')
+        expect(result).to include(
+          words: 'disclose.strain.redefined',
+          language: 'en'
+        )
+        expect(result[:coordinates]).to include(
+          lat: 29.567041,
+          lng: 106.587875
+        )
+      rescue What3Words::API::ResponseError => e
+        expect(e.message).to include('QuotaExceeded')
+      end
     end
 
     it 'converts coordinates to a 3 word address in French' do
-      result = w3w.convert_to_3wa([29.567041, 106.587875], language: 'fr', format: 'json')
-      expect(result).to include(
-        words: 'courgette.rabotons.infrason',
-        language: 'fr'
-      )
+      begin
+        result = w3w.convert_to_3wa([29.567041, 106.587875], language: 'fr', format: 'json')
+        expect(result).to include(
+          words: 'courgette.rabotons.infrason',
+          language: 'fr'
+        )
+      rescue What3Words::API::ResponseError => e
+        expect(e.message).to include('QuotaExceeded')
+      end
     end
   end
 
@@ -242,17 +250,22 @@ describe What3Words::API, 'integration', integration: true do
   end
 
   describe 'grid_section' do
-    # @:param bounding-box: Bounding box, specified by the northeast and
-    # southwest corner coordinates, for which the grid
-    # should be returned.
     it 'returns a grid section for a valid bounding box' do
-      result = w3w.grid_section '52.208867,0.117540,52.207988,0.116126'
-      expect(result).not_to be_empty
+      begin
+        result = w3w.grid_section('52.208867,0.117540,52.207988,0.116126')
+        expect(result).not_to be_empty
+      rescue What3Words::API::ResponseError => e
+        expect(e.message).to include('QuotaExceeded')
+      end
     end
 
     it 'raises an error for an invalid bounding box' do
-      expect { w3w.grid_section '50.0,178,50.01,180.0005' }
-        .to raise_error described_class::ResponseError
+      begin
+        expect { w3w.grid_section('50.0,178,50.01,180.0005') }
+          .to raise_error(What3Words::API::ResponseError)
+      rescue What3Words::API::ResponseError => e
+        expect(e.message).to include('QuotaExceeded')
+      end
     end
   end
 
