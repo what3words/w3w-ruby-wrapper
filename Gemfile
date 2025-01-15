@@ -3,3 +3,4 @@
 source 'https://rubygems.org'
 gemspec
 gem 'rspec'
+gem 'bundler', '~> 2.1'
